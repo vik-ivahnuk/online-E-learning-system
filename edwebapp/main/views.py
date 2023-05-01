@@ -1,5 +1,7 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 
 
 def index(request):
-    return HttpResponse('<h1>start project</h1>')
+    return render(request, 'main/login-page.html')
+
+

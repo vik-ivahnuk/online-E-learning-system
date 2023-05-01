@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Welcome</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/swiper/swiper-bundle.min.css"
+        />
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+        <link rel="icon" href="{% static 'main/img/logo_main.png'  %}">
+    </head>
+    <body>
+
+        <header id="header">
+            <nav>
+                <div class="container">
+                    <div class="logo">
+                        <img src="{% static 'main/img/logo.png' %}" alt="Logo" />
+                    </div>
+
+                    <div class="links">
+                        <ul>
+                            <li> <a class="nav_link" href="#">Home</a></li>
+                            <li> <a class="nav_link" href="#">About-us</a></li>
+                            <li> <a class="nav_link" href="#">GitHub</a></li>
+                            <li> <button class="login-btn">Login</button></li>
+                        </ul>
+                    </div>
+
+                    <div class="dropdown-menu">
+                        <div class="bar"></div>
+                    </div>
+                  </div>
+            </nav>
+        </header>
+
+        <!-- Registration form -->
+
+        <div class="overlay hidden-form"></div>
+        <div class="registration-form hidden-form">
+            <div class="form-container">
+            <h2>Registration Form</h2>
+            <form>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+
+                <button type="submit">Register</button>
+            </form>
+            <button class="close-btn">Close</button>
+            </div>
+        </div>
+
+
+        <div class="header-content">
+            <div class="container grid-2">
+                <div class="column-1" >
+                    <a class="btn" href="#" >Get Started</a>
+                </div>
+
+                <div class="column-2">
+                    <div class="container_inner">
+                        <div class="box">
+                            <h2>Teacher</h2>
+                            <p>Створюйте свої курси та запрошуйте до них своїх учнів. Сворюйте завдання для тестів за допомогою інструментів цієї платформи.</p>
+                        </div>
+                        <div class="box">
+                            <h2>Student</h2>
+                            <p>Text </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <script>
+            const hamburger_menu = document.querySelector(".dropdown-menu");
+            const navbar = document.querySelector("header nav");
+            const links = document.querySelectorAll(".links a");
+
+            const btn = document.querySelector(".btn");
+            const loginBtn = document.querySelector(".login-btn");
+            const overlay = document.querySelector(".overlay");
+            const regForm = document.querySelector(".registration-form");
+            const close_btn = document.querySelector(".close-btn");
+
+            function closeMenu() {
+                navbar.classList.remove("open");
+                document.body.classList.remove("scroll-none");
+            }
+
+            function showOverlay() {
+                overlay.classList.remove("hidden-form");
+                regForm.classList.toggle("hidden-form");
+            }
+
+            hamburger_menu.addEventListener("click", () => {
+                if (!navbar.classList.contains("open")) {
+                    navbar.classList.add("open");
+                    document.body.classList.add("scroll-none");
+                } else {
+                    closeMenu();
+                }
+            });
+
+            btn.addEventListener("click", showOverlay);
+
+            loginBtn.addEventListener("click", () => {
+                closeMenu();
+                overlay.classList.toggle("hidden-form");
+                regForm.classList.toggle("hidden-form");
+            });
+
+            close_btn.addEventListener("click", () => {
+                overlay.classList.toggle("hidden-form");
+                regForm.classList.toggle("hidden-form");
+            });
+
+            links.forEach((link) => link.addEventListener("click", () => closeMenu()));
+        </script>
+        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    </body>
+</html>
