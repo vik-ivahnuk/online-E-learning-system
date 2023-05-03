@@ -1,0 +1,164 @@
+@import url('root.css');
+
+
+h1 {
+    margin: 0;
+}
+
+.close-button {
+    display: flex;
+    flex-direction: row-reverse;
+    color: #000;
+}
+
+.close-button .close-outline ion-icon{
+    padding-top: 0.1rem;
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+ion-icon{
+    font-size: 2rem;
+}
+
+
+.hidden-element{
+    display: none;
+}
+
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 9999;
+}
+
+
+.sign-in-up-form {
+    display: grid;
+    grid-template-columns: 100%;
+    height: 100vh;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+}
+
+.login-form-content {
+    display: grid;
+    z-index: 10000;
+}
+
+.login-form {
+    margin-top: 5rem;
+    position: relative;
+    height: 368px;
+}
+.sign-in,.sign-up {
+    position:absolute;
+    width: 100%;
+    background-color: var(--gray-light);
+    padding: 2rem 1rem;
+    border-radius: 1rem;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(35,0,77,0.3);
+    overflow: hidden;
+    animation-duration: 0.5s;
+    animation-name: animate-login;
+}
+
+@keyframes animate-login {
+    0%{
+        transform: scale(1,1);
+    }
+    50% {
+        transform: scale(1.02,1.02);
+    }
+    100% {
+        transform: scale(1,1);
+    }
+}
+
+
+.form-title {
+    font-size: var(--h1-font-size);
+    margin: 2rem;
+    color: var(--main-color);
+}
+
+.input-box {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    column-gap: 0.5rem;
+    padding: 0.8rem 0.8rem;
+    background-color: white;
+    margin-top: 1rem;
+    border-radius: 0.5rem;
+}
+
+.input-icon {
+    font-size: 1rem;
+    color: var(--black);
+}
+
+.line-input {
+    border:none;
+    outline: none;
+    font-size: var(--regular-font-size);
+    font-weight: 500;
+    color: var(--gray-one);
+}
+
+.line-input::placeholder {
+    font-size: var(--regular-font-size);
+    font-family: var(--body-font);
+    color: var(--first-color-light);
+}
+
+.login-btn {
+    display: block;
+    padding: 1rem;
+    margin: 2rem 0;
+    background-color: var(--green-light);
+    color: white;
+    font-weight: 600;
+    text-align: center;
+    border-radius: 0.5rem;
+    transition: 0.3s;
+}
+
+.login-btn:hover {
+    background-color: var(--green-dark);
+}
+
+.label-link-signinup,.link-signin,.link-signup {
+    font-weight: 600;
+    font-size: var(--small-font-size);
+}
+
+.label-link-signinup {
+    color: var(--gray-one);
+}
+
+.link-signin,.link-signup {
+    color: var(--main-color);
+    cursor: pointer;
+}
+
+.block {
+    display: block;
+}
+
+
+@media screen and (min-width: 560px)
+{
+    .login-form {
+        margin-top: 7rem;
+        width: 348px;
+        justify-self: center;
+    }
+}

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -9,12 +8,16 @@
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
         />
+            <link rel="stylesheet" href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css">
         <link
             rel="stylesheet"
             href="https://unpkg.com/swiper/swiper-bundle.min.css"
         />
+
         {% load static %}
+
         <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+        <link rel="stylesheet" href="{% static 'main/css/login-form.css' %}">
         <link rel="icon" href="{% static 'main/img/logo_main.png'  %}">
     </head>
     <body>
@@ -22,6 +25,7 @@
         <header id="header">
             <nav>
                 <div class="container">
+
                     <div class="logo">
                         <img src="{% static 'main/img/logo.png' %}" alt="Logo" />
                     </div>
@@ -31,36 +35,91 @@
                             <li> <a class="nav_link" href="#">Home</a></li>
                             <li> <a class="nav_link" href="#">About-us</a></li>
                             <li> <a class="nav_link" href="#">GitHub</a></li>
-                            <li> <button class="login-btn">Login</button></li>
+                            <li> <button class="log-reg-btn">Login</button></li>
                         </ul>
                     </div>
 
                     <div class="dropdown-menu">
                         <div class="bar"></div>
                     </div>
+
                   </div>
             </nav>
         </header>
 
-        <!-- Registration form -->
+        <div class="overlay hidden-element">
+            <div class="sign-in-up-form">
+                <div class="login-form-content">
+                    <div class="login-form">
 
-        <div class="overlay hidden-form"></div>
-        <div class="registration-form hidden-form">
-            <div class="form-container">
-            <h2>Registration Form</h2>
-            <form>
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
+                    <form action="" class="sign-in" id="s-in">
+                        <div class="close-button">
+                            <ion-icon name="close-outline"></ion-icon>
+                        </div>
 
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+                        <h1 class="form-title">Safe Landing!</h1>
 
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
+                        <div class="input-box">
+                            <i class='bx bx-user input-icon'></i>
+                            <input type="text" placeholder="Username" class="line-input">
+                        </div>
 
-                <button type="submit">Register</button>
-            </form>
-            <button class="close-btn">Close</button>
+                        <div class="input-box">
+                            <i class='bx bx-lock input-icon'></i>
+                            <input type="password" placeholder="Password" class="line-input">
+                        </div>
+
+                        <a href="#" class="login-btn">Sign In</a>
+
+                        <div>
+                            <span class="label-link-signinup">Don't have an Account?</span>
+                            <span class="link-signin" id="sign-up">Sign Up Now</span>
+                        </div>
+                    </form>
+
+                    <form action="" class="sign-up hidden-element" id="s-up">
+                        <div class="close-button">
+                            <ion-icon name="close-outline"></ion-icon>
+                        </div>
+
+                        <h1 class="form-title">Welcome!</h1>
+
+                        <div class="input-box">
+                            <i class='bx bx-user input-icon'></i>
+                            <input type="text" placeholder="Username" class="line-input">
+                        </div>
+
+                        <div class="input-box">
+                            <i class='bx bx-at input-icon'></i>
+                            <input type="text" placeholder="Email" class="line-input">
+                        </div>
+
+                        <div class="input-box">
+                            <i class='bx bx-user input-icon'></i>
+                            <input type="text" placeholder="First name" class="line-input">
+                        </div>
+
+                        <div class="input-box">
+                            <i class='bx bx-user input-icon'></i>
+                            <input type="text" placeholder="Last name" class="line-input">
+                        </div>
+
+                        <div class="input-box">
+                            <i class='bx bx-lock input-icon'></i>
+                            <input type="password" placeholder="Password" class="line-input">
+                        </div>
+
+                        <a href="#" class="login-btn">Sign Up</a>
+
+                        <div>
+                            <span class="label-link-signinup">Already have an Account?</span>
+                            <span class="link-signup" id="sign-in">Sign In</span>
+                        </div>
+
+
+                   </form>
+                </div>
+                </div>
             </div>
         </div>
 
@@ -87,53 +146,10 @@
             </div>
         </div>
 
-
-        <script>
-            const hamburger_menu = document.querySelector(".dropdown-menu");
-            const navbar = document.querySelector("header nav");
-            const links = document.querySelectorAll(".links a");
-
-            const btn = document.querySelector(".btn");
-            const loginBtn = document.querySelector(".login-btn");
-            const overlay = document.querySelector(".overlay");
-            const regForm = document.querySelector(".registration-form");
-            const close_btn = document.querySelector(".close-btn");
-
-            function closeMenu() {
-                navbar.classList.remove("open");
-                document.body.classList.remove("scroll-none");
-            }
-
-            function showOverlay() {
-                overlay.classList.remove("hidden-form");
-                regForm.classList.toggle("hidden-form");
-            }
-
-            hamburger_menu.addEventListener("click", () => {
-                if (!navbar.classList.contains("open")) {
-                    navbar.classList.add("open");
-                    document.body.classList.add("scroll-none");
-                } else {
-                    closeMenu();
-                }
-            });
-
-            btn.addEventListener("click", showOverlay);
-
-            loginBtn.addEventListener("click", () => {
-                closeMenu();
-                overlay.classList.toggle("hidden-form");
-                regForm.classList.toggle("hidden-form");
-            });
-
-            close_btn.addEventListener("click", () => {
-                overlay.classList.toggle("hidden-form");
-                regForm.classList.toggle("hidden-form");
-            });
-
-            links.forEach((link) => link.addEventListener("click", () => closeMenu()));
-        </script>
+        <script src="{% static 'main/js/login-page.js' %}"></script>
+        <script src="{% static 'main/js/login-form.js' %}"></script>
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
     </body>
 </html>
