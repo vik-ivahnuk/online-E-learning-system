@@ -57,7 +57,7 @@
                             <ion-icon name="close-outline"></ion-icon>
                         </div>
 
-                        <h1 class="form-title">Safe Landing!</h1>
+                        <h1 class="form-title">Login</h1>
 
                         <div class="input-box">
                             <i class='bx bx-user input-icon'></i>
@@ -77,47 +77,52 @@
                         </div>
                     </form>
 
-                    <form action="" class="sign-up hidden-element" id="s-up">
+                    {% block content %}
+                    <form action="" class="sign-up hidden-element" id="s-up" method="post">
+
+                        {% csrf_token %}
+
                         <div class="close-button">
                             <ion-icon name="close-outline"></ion-icon>
                         </div>
 
-                        <h1 class="form-title">Welcome!</h1>
+                        <h1 class="form-title">Login</h1>
+
 
                         <div class="input-box">
                             <i class='bx bx-user input-icon'></i>
-                            <input type="text" placeholder="Username" class="line-input">
+                            {{ signupform.username }}
                         </div>
 
                         <div class="input-box">
                             <i class='bx bx-at input-icon'></i>
-                            <input type="text" placeholder="Email" class="line-input">
+                            {{ signupform.email }}
                         </div>
 
                         <div class="input-box">
                             <i class='bx bx-user input-icon'></i>
-                            <input type="text" placeholder="First name" class="line-input">
+                            {{ signupform.first_name }}
                         </div>
 
                         <div class="input-box">
                             <i class='bx bx-user input-icon'></i>
-                            <input type="text" placeholder="Last name" class="line-input">
+                            {{ signupform.last_name }}
                         </div>
 
                         <div class="input-box">
                             <i class='bx bx-lock input-icon'></i>
-                            <input type="password" placeholder="Password" class="line-input">
+                            {{ signupform.password }}
                         </div>
 
-                        <a href="#" class="login-btn">Sign Up</a>
+                        <button type="submit" class="login-btn">Sign Up</button>
 
                         <div>
                             <span class="label-link-signinup">Already have an Account?</span>
                             <span class="link-signup" id="sign-in">Sign In</span>
                         </div>
 
-
                    </form>
+                   {% endblock %}
                 </div>
                 </div>
             </div>
