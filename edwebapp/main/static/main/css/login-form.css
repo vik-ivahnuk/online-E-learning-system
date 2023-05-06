@@ -140,6 +140,12 @@ ion-icon{
     font-size: var(--small-font-size);
 }
 
+.err {
+    font-size: 0.7rem;
+    color: red;
+}
+
+
 .label-link-signinup {
     color: var(--gray-one);
 }

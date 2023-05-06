@@ -47,12 +47,15 @@
             </nav>
         </header>
 
-        <div class="overlay hidden-element">
+        <div class="{% if mode == 0 %}overlay hidden-element{% else %}overlay{% endif %}">
             <div class="sign-in-up-form">
                 <div class="login-form-content">
                     <div class="login-form">
 
-                    <form action="" class="sign-in" id="s-in">
+                    {% block sign_in_content %}
+                    <form action="" class="{% if mode == 2 %}sign-in hidden-element{% else %}sign-in{% endif %}" id="s-in" method="post">
+
+                        {% csrf_token %}
                         <div class="close-button">
                             <ion-icon name="close-outline"></ion-icon>
                         </div>
@@ -61,24 +64,28 @@
 
                         <div class="input-box">
                             <i class='bx bx-user input-icon'></i>
-                            <input type="text" placeholder="Username" class="line-input">
+                            {{ signinform.username }}
                         </div>
 
                         <div class="input-box">
                             <i class='bx bx-lock input-icon'></i>
-                            <input type="password" placeholder="Password" class="line-input">
+                            {{ signinform.password }}
                         </div>
 
-                        <a href="#" class="login-btn">Sign In</a>
+                        <span class="err">{{ signinform.non_field_errors }}</span>
+
+
+                        <button href="#" name="sign-in" class="login-btn">Sign In</button>
 
                         <div>
                             <span class="label-link-signinup">Don't have an Account?</span>
                             <span class="link-signin" id="sign-up">Sign Up Now</span>
                         </div>
                     </form>
+                    {% endblock %}
 
-                    {% block content %}
-                    <form action="" class="sign-up hidden-element" id="s-up" method="post">
+                    {% block sign_up_content %}
+                    <form action="" class="{% if mode < 2 %}sign-up hidden-element{% else %}sign-up{% endif %}" id="s-up" method="post">
 
                         {% csrf_token %}
 
@@ -93,11 +100,13 @@
                             <i class='bx bx-user input-icon'></i>
                             {{ signupform.username }}
                         </div>
+                        <span class="err">{{ signupform.username.errors }}</span>
 
                         <div class="input-box">
                             <i class='bx bx-at input-icon'></i>
                             {{ signupform.email }}
                         </div>
+                        <span class="err">{{ signupform.email.errors }}</span>
 
                         <div class="input-box">
                             <i class='bx bx-user input-icon'></i>
@@ -114,7 +123,7 @@
                             {{ signupform.password }}
                         </div>
 
-                        <button type="submit" class="login-btn">Sign Up</button>
+                        <button type="submit" name="sign-up" class="login-btn">Sign Up</button>
 
                         <div>
                             <span class="label-link-signinup">Already have an Account?</span>
