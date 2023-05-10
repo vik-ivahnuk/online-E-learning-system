@@ -33,6 +33,7 @@ class CustomUserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
+    # id = models.indexes()
     email = models.EmailField(verbose_name='email', max_length=60, unique=True)
     username = models.CharField(max_length=30, unique=True)
     first_name = models.CharField(max_length=30)
@@ -43,6 +44,8 @@ class User(AbstractBaseUser):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
+
+    backend = 'main.backends.UserBackend'
 
     objects = CustomUserManager()
 
@@ -57,3 +60,5 @@ class User(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
+
+

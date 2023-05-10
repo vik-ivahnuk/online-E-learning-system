@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate
+
 from django.forms import ModelForm, Form, TextInput, EmailInput, PasswordInput, CharField
 from .models import User
 from django.core.exceptions import ValidationError
@@ -33,9 +33,6 @@ class SignInForm(Form):
         if not password:
             raise ValidationError("Поле password не може бути порожнім.")
 
-        user = authenticate(username=username, password=password, backend='main.backends.UserBackend')
-        if not user:
-            raise ValidationError("Неправильне ім'я користувача або пароль.")
         return cleaned_data
 
 

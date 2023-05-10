@@ -23,11 +23,6 @@ ion-icon{
 }
 
 
-.hidden-element{
-    display: none;
-}
-
-
 .overlay {
     position: fixed;
     top: 0;

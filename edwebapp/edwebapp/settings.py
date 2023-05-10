@@ -16,7 +16,7 @@ AUTHENTICATION_BACKENDS = [
     'main.backends.UserBackend',
 ]
 
-# AUTH_USER_MODEL = 'main.User'
+AUTH_USER_MODEL = 'main.User'
 
 # Application definition
 
