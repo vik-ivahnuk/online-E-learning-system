@@ -123,8 +123,8 @@
             <h1 class="text-body-emphasis">Вибраний режим роботи</h1>
             <div class="col-lg-6 mx-auto">
                 <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                    <button type="button" class="btn align-items-center btn btn-primary btn-lg px-4 rounded-pill">Студент</button>
-                    <button type="button" class="btn btn-outline-secondary btn-lg px-4 rounded-pill">Вчитель</button>
+                    <button type="button" class="btn btn-outline-secondary btn-lg px-4 rounded-pill">Студент</button>
+                    <button type="button" class="btn align-items-center btn btn-primary btn-lg px-4 rounded-pill">Вчитель</button>
                 </div>
             </div>
         </div>
@@ -134,21 +134,26 @@
         <div class="p-5 mode">
             <div class="row">
                     <h1 class="text-center text-body-emphasis">
-                        Приєднатися до курсу
+                        Сворити курс
                         <button id="show-form" class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#form-add" aria-expanded="false" aria-controls="form-add">
                             <i id="plus" class="bi bi-plus-lg"></i>
                             <i id="c-up" class="bi bi-chevron-up hidden-element"></i>
                         </button>
                     </h1>
 
-                    <div id="form-add" class="col-md-12 collapse">
-                        <form class="d-flex">
-                            <input class="form-control me-2" type="search" placeholder="Уведіть код курсу">
-                            <button class="btn btn-outline-secondary" type="submit">
-                                <i class="bi bi-person-plus-fill"></i>
-                            </button>
+                    <div id="form-add" class="col-md-6 collapse mx-auto">
+                        <form class="">
+                          <div class="form-floating mb-3">
+                            <input type="email" class="form-control rounded-3" id="floatingInput" placeholder="Назва курсу">
+                            <label for="floatingInput">Уведіть назву курсу</label>
+                          </div>
+                          <div class="form-floating mb-3">
+                           <textarea class="form-control h-100" id="floatingTextArea" placeholder="Уведіть опис курсу"></textarea>
+                           <label for="floatingTextArea">Уведіть опис курсу</label>
+                          </div>
+                          <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">Додати</button>
+
                         </form>
-                        <span class="text-body-emphasis">Код курсу ви можете отримати у свого вчителя:</span>
                     </div>
             </div>
         </div>
@@ -165,10 +170,6 @@
                         <h1 class="head-text">
                             Алгоритми та склданість
                         </h1>
-                        <i class="bi bi-person-circle head-icon"></i>
-                        <h2 class="head-text">
-                            Win S
-                        </h2>
                     </div>
                     <div class="card-body">
                         <p class="card-text">
@@ -181,13 +182,13 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="justify-content-start">
                                 <button type="button" class="btn btn-sm btn-primary rounded-pill card-btn">
-                                    Переглянути <i class="bi bi-arrow-right"></i>
+                                    Редагувати курс
                                 </button>
                             </div>
                             <div class="mx-2"></div>
                             <div class="justify-content-end ml-auto">
                                 <button type="button" class="btn btn-sm btn-danger rounded-pill card-btn">
-                                    Покинути курс
+                                    Видалити курс
                                 </button>
                             </div>
                         </div>
