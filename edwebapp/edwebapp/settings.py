@@ -1,10 +1,8 @@
-
-
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-3=10ww-6g=*@cko5e8_p^e&hiq1gk-3q6zqpfz+0&lzpv(c0il'
+SECRET_KEY = 'django-insecure-(^xk*m)%=)0&q@@lm*v@o@ku1yp33oq8)ru^5!xbuqvxuy7v3='
 
 DEBUG = True
 
@@ -13,12 +11,10 @@ ALLOWED_HOSTS = []
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    'main.backends.UserBackend',
+    'app.backends.UserBackend',
 ]
 
-AUTH_USER_MODEL = 'main.User'
-
-# Application definition
+AUTH_USER_MODEL = 'app.User'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -27,7 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'main'
+    'app'
 ]
 
 MIDDLEWARE = [
@@ -60,13 +56,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'edwebapp.wsgi.application'
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ed_system_db',
+        'NAME': 'edwebapp_db',
         'USER': 'vik',
-        'PASSWORD': 1912,
-        'HOST': 'localhost'
+        'PASSWORD': '1912',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 

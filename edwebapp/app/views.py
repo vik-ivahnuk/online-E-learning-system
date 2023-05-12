@@ -5,40 +5,6 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 
 
-@login_required(login_url='/')
-def get_home(request):
-    print(request.user.courses.all())
-    context = {
-        'username': request.user.username,
-        'name': request.user.first_name + ' ' + request.user.last_name
-    }
-    return render(request, 'main/home.html', context)
-
-
-def get_course(request):
-    return render(request, 'main/course.html')
-
-
-@login_required(login_url='home')
-def get_home_teacher(request):
-    if request.method == 'POST':
-        course_form = CourseForm(request.POST)
-        if course_form.is_valid():
-            course = Course()
-            course.name = course_form.cleaned_data.get('name')
-            course.description = course_form.cleaned_data.get('description')
-            course.user = request.user
-            course.save()
-            print('successfully')
-
-    context = {
-        'course_form': CourseForm(),
-        'username': request.user.username,
-        'name': request.user.first_name + ' ' + request.user.last_name
-    }
-    return render(request, 'main/home-teacher.html', context)
-
-
 def index(request):
     logout(request)
 
@@ -51,7 +17,7 @@ def index(request):
                 signupform.save()
                 username = signupform.cleaned_data.get('username')
                 raw_password = signupform.cleaned_data.get('password')
-                user = authenticate(username=username, password=raw_password, backend='main.backends.UserBackend')
+                user = authenticate(username=username, password=raw_password, backend='app.backends.UserBackend')
                 print(user)
                 login(request, user)
                 if request.user.is_authenticated:
@@ -79,4 +45,51 @@ def index(request):
         'mode': num
     }
 
-    return render(request, 'main/login-page.html', context)
+    return render(request, 'app/login-page.html', context)
+
+
+@login_required(login_url='/')
+def get_home(request):
+    # print(request.user.courses.all())
+    context = {
+        'username': request.user.username,
+        'name': request.user.first_name + ' ' + request.user.last_name
+    }
+    return render(request, 'app/home.html', context)
+
+
+def get_course(request):
+    context = {
+        'username': request.user.username,
+        'name': request.user.first_name + ' ' + request.user.last_name,
+        'test_form': TestForm()
+    }
+    return render(request, 'app/course.html', context)
+
+
+@login_required(login_url='home')
+def get_home_teacher(request):
+    if request.method == 'POST':
+        course_form = CourseForm(request.POST)
+        if course_form.is_valid():
+            course = Course()
+            course.name = course_form.cleaned_data.get('name')
+            course.description = course_form.cleaned_data.get('description')
+            course.user = request.user
+            course.save()
+            print('successfully')
+
+    context = {
+        'course_form': CourseForm(),
+        'username': request.user.username,
+        'name': request.user.first_name + ' ' + request.user.last_name
+    }
+    return render(request, 'app/home-teacher.html', context)
+
+
+def get_course_editor(request, code):
+    course = Course.objects.get(code=code)
+    context = {
+        'course': course
+    }
+    return render(request, 'app/course.html', context)

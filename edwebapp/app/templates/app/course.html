@@ -8,45 +8,13 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <title>Tests</title>
         {% load static %}
-        <link rel="icon" href="{% static 'main/img/logo_main.png'  %}">
-        <link rel="stylesheet" href="{% static 'main/css/home-page.css' %}">
+        {% load app_tags %}
+        <link rel="icon" href="{% static 'app/img/logo_main.png'  %}">
+        <link rel="stylesheet" href="{% static 'app/css/home-page.css' %}">
     </head>
 <body>
 
-    <header class="p-3 mb-3">
-        <div class="container">
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-
-            <div class="d-flex align-items-center mb-2 mb-lg-0">
-                <img src="{% static 'main/img/logo.png' %}" alt="Logo" style="max-width: 65px; height: auto;">
-            </div>
-
-            <div class="nav col-12 col-lg-auto me-lg-auto mb-2"></div>
-            <a href="#" class="nav-link px-2 text-secondary">Home</a>
-            <a href="#" class="nav-link px-2 link-light">Logout</a>
-
-            <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-person-circle" style="font-size: 2rem;"></i>
-            </a>
-            <ul class="dropdown-menu text-small dropdown-menu-acc">
-                <li>
-                    <div class="d-flex align-items-center py-2">
-                        <i class="bi bi-person-circle ms-3" style="font-size: 1.8rem;"></i>
-                        <div class="flex-column justify-content-center ms-2">
-                            <h1 style="font-size: 0.9rem; margin: 0;">username</h1>
-                            <h2 style="font-size: 0.7rem; margin: 0;">name lastname</h2>
-                        </div>
-                    </div>
-                </li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Редагувати профіль</a></li>
-            </ul>
-
-
-
-            </div>
-        </div>
-    </header>
+    {% show_header username name %}
 
     <div class="container my-4">
         <div class="p-3 mode">
@@ -56,7 +24,7 @@
                     </h2>
 
                     <div class="col-md-4 mx-auto d-flex">
-                        <input id="idCourse" class="form-control me-2" readonly value="#######################">
+                        <input id="idCourse" class="form-control me-2" readonly value="{{course.code}}">
                         <button class="btn btn-outline-secondary" onclick="copy()" type="submit">
                             <ion-icon name="copy-outline"></ion-icon>
                         </button>
@@ -68,22 +36,27 @@
     <div class="container my-4">
         <div class="p-3 mode">
             <div class="row">
-                    <h1 class="text-center text-body-emphasis">
-                        Створити тест
-                        <button id="show-form" class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#form-add" aria-expanded="false" aria-controls="form-add">
-                            <i id="plus" class="bi bi-plus-lg"></i>
-                            <i id="c-up" class="bi bi-chevron-up hidden-element"></i>
-                        </button>
-                    </h1>
+                <h1 class="text-center text-body-emphasis">
+                    Створити тест
+                    <button id="show-form" class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#form-add" aria-expanded="false" aria-controls="form-add">
+                        <i id="plus" class="bi bi-plus-lg"></i>
+                        <i id="c-up" class="bi bi-chevron-up hidden-element"></i>
+                    </button>
+                </h1>
 
-                    <div id="form-add" class="col-md-6 mx-auto collapse">
-                        <form class="d-flex">
-                            <input class="form-control me-2" type="search" placeholder="Уведіть назву тесту">
-                            <button class="btn btn-outline-secondary" type="submit">
-                                <i class="bi bi-plus-lg"></i>
-                            </button>
-                        </form>
-                    </div>
+                <div id="form-add" class="col-md-6 mx-auto collapse">
+
+                    {% block test_form_content %}
+                    <form class="d-flex" method="post">
+                        {% csrf_token %}
+                        {{ test_form.name}}
+                        <button class="btn btn-outline-secondary" type="submit">
+                            <i class="bi bi-plus-lg"></i>
+                        </button>
+                    </form>
+                    {% endblock %}
+
+                </div>
             </div>
         </div>
     </div>

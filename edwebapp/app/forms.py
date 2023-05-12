@@ -1,4 +1,3 @@
-
 from django.forms import ModelForm, Form, TextInput, EmailInput, PasswordInput, CharField
 from .models import User
 from django.core.exceptions import ValidationError
@@ -106,7 +105,7 @@ class CourseForm(Form):
         widget=TextInput(attrs={
             'class': 'form-control rounded-3',
             'id': 'id_name',
-            'placeholder': 'Username'
+            'placeholder': 'Назва'
         })
     )
     description = CharField(
@@ -125,8 +124,26 @@ class CourseForm(Form):
         description = cleaned_data.get("description")
 
         if not name:
-            raise ValidationError("Поле username не може бути порожнім.")
+            raise ValidationError("Поле 'назва' не може бути порожнім.")
         if not description:
-            raise ValidationError("Поле password не може бути порожнім.")
+            raise ValidationError("Поле 'опис' не може бути порожнім.")
 
+        return cleaned_data
+
+
+class TestForm(Form):
+    name = CharField(
+        label='ведіть назву',
+        max_length=50,
+        widget=TextInput(attrs={
+            'class': 'form-control me-2',
+            'placeholder': 'Уведіть назву нового тесту'
+        })
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        name = cleaned_data.get("name")
+        if not name:
+            raise ValidationError("Поле 'назва' не може бути порожнім.")
         return cleaned_data
