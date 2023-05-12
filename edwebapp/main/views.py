@@ -1,13 +1,42 @@
 from django.shortcuts import render, redirect
-from .forms import SignUpForm, SignInForm
+from .forms import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from .models import *
 
 
 @login_required(login_url='/')
 def get_home(request):
-    print('----------------------------            ', request.user)
-    return render(request, 'main/home.html', {'user': request.user})
+    print(request.user.courses.all())
+    context = {
+        'username': request.user.username,
+        'name': request.user.first_name + ' ' + request.user.last_name
+    }
+    return render(request, 'main/home.html', context)
+
+
+def get_course(request):
+    return render(request, 'main/course.html')
+
+
+@login_required(login_url='home')
+def get_home_teacher(request):
+    if request.method == 'POST':
+        course_form = CourseForm(request.POST)
+        if course_form.is_valid():
+            course = Course()
+            course.name = course_form.cleaned_data.get('name')
+            course.description = course_form.cleaned_data.get('description')
+            course.user = request.user
+            course.save()
+            print('successfully')
+
+    context = {
+        'course_form': CourseForm(),
+        'username': request.user.username,
+        'name': request.user.first_name + ' ' + request.user.last_name
+    }
+    return render(request, 'main/home-teacher.html', context)
 
 
 def index(request):
@@ -38,6 +67,7 @@ def index(request):
                 if user is None:
                     signinform.add_error(None, 'Неправильне ім\'я користувача або пароль.')
                 else:
+                    login(request, user)
                     return redirect('home')
     else:
         signupform = SignUpForm()

@@ -1,5 +1,6 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.db import models
+import secrets
 
 
 class CustomUserManager(BaseUserManager):
@@ -33,7 +34,6 @@ class CustomUserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
-    # id = models.indexes()
     email = models.EmailField(verbose_name='email', max_length=60, unique=True)
     username = models.CharField(max_length=30, unique=True)
     first_name = models.CharField(max_length=30)
@@ -62,3 +62,11 @@ class User(AbstractBaseUser):
         return True
 
 
+class Course(models.Model):
+    code = models.CharField(max_length=8, unique=True, default=secrets.token_hex(4))
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='courses')
+
+    def __str__(self):
+        return self.name

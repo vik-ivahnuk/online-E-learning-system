@@ -97,3 +97,36 @@ class SignUpForm(ModelForm):
         user.set_password(self.cleaned_data['password'])
         if commit:
             user.save()
+
+
+class CourseForm(Form):
+    name = CharField(
+        label='ведіть назву',
+        max_length=50,
+        widget=TextInput(attrs={
+            'class': 'form-control rounded-3',
+            'id': 'id_name',
+            'placeholder': 'Username'
+        })
+    )
+    description = CharField(
+        label='Введіть опис',
+        max_length=200,
+        widget=TextInput(attrs={
+            'class': 'form-control rounded-3',
+            'id': 'id_description',
+            'placeholder': 'Опис курсу'
+        })
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        name = cleaned_data.get("name")
+        description = cleaned_data.get("description")
+
+        if not name:
+            raise ValidationError("Поле username не може бути порожнім.")
+        if not description:
+            raise ValidationError("Поле password не може бути порожнім.")
+
+        return cleaned_data

@@ -6,124 +6,22 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-        <title>Hello, world!</title>
-        <style>
-        .card {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-
-        .card-body {
-            font-size: 1rem;
-            height: 50%;
-        }
-
-        .card-text {
-            height: 70%;
-            font-size: 0.8rem;
-        }
-
-        .course {
-            border-radius: 1.5rem;
-        }
-
-        .head {
-            border-top-left-radius: 1.5rem;
-            border-top-right-radius: 1.5rem;
-            background: red;
-        }
-
-        .mode {
-            background: radial-gradient(circle at 18.7% 37.8%, rgb(250, 250, 250) 0%, rgb(225, 234, 238) 90%);
-            border-radius: 1.5rem
-        }
-
-
-        .hidden-element {
-            display: none;
-        }
-
-        .head-text {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            font-size: 1.4rem;
-            color: white;
-        }
-
-        .head-icon {
-            font-size: 1.7rem;
-            color: white;
-        }
-
-        .username {
-            display: flex;
-
-            align-items: center;
-        }
-
-        .dropdown-menu-acc {
-            border-radius: 0.5rem;
-        }
-
-        .card-btn {
-            font-size: 0.6 rem;
-        }
-
-        .link-light:hover {
-            color: black;
-        }
-
-
-
-
-
-        </style>
+        <title>Home</title>
+        {% load static %}
+        {% load main_tags %}
+        <link rel="icon" href="{% static 'main/img/logo_main.png'  %}">
+        <link rel="stylesheet" href="{% static 'main/css/home-page.css' %}">
     </head>
 <body>
 
-    <header class="p-3 mb-3" style="background-color: red;">
-        <div class="container">
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none">
-                 <img src="main/img/logo.png" alt="Logo" />
-            </a>
-
-            <div class="nav col-12 col-lg-auto me-lg-auto mb-2"></div>
-            <a href="#" class="nav-link px-2 text-secondary">Home</a>
-            <a href="#" class="nav-link px-2 link-light">Logout</a>
-
-            <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-person-circle" style="font-size: 1.7rem;"></i>
-            </a>
-            <ul class="dropdown-menu text-small dropdown-menu-acc">
-                <li>
-                    <div class="d-flex align-items-center py-2">
-                        <i class="bi bi-person-circle ms-3" style="font-size: 1.8rem;"></i>
-                        <div class="flex-column justify-content-center ms-2">
-                            <h1 style="font-size: 0.9rem; margin: 0;">username</h1>
-                            <h2 style="font-size: 0.7rem; margin: 0;">name lastname</h2>
-                        </div>
-                    </div>
-                </li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Редагувати профіль</a></li>
-            </ul>
-
-
-
-            </div>
-        </div>
-    </header>
+    {% show_header username name %}
 
     <div class="container my-4">
-        <div class="p-5 text-center mode">
+        <div class="p-3 text-center mode">
             <h1 class="text-body-emphasis">Вибраний режим роботи</h1>
             <div class="col-lg-6 mx-auto">
                 <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                    <button type="button" class="btn btn-outline-secondary btn-lg px-4 rounded-pill">Студент</button>
+                    <a href="{% url 'home' %}" type="button" class="btn btn-outline-secondary btn-lg px-4 rounded-pill">Студент</a>
                     <button type="button" class="btn align-items-center btn btn-primary btn-lg px-4 rounded-pill">Вчитель</button>
                 </div>
             </div>
@@ -131,7 +29,7 @@
     </div>
 
     <div class="container my-4">
-        <div class="p-5 mode">
+        <div class="p-3 mode">
             <div class="row">
                     <h1 class="text-center text-body-emphasis">
                         Сворити курс
@@ -142,63 +40,31 @@
                     </h1>
 
                     <div id="form-add" class="col-md-6 collapse mx-auto">
-                        <form class="">
-                          <div class="form-floating mb-3">
-                            <input type="email" class="form-control rounded-3" id="floatingInput" placeholder="Назва курсу">
-                            <label for="floatingInput">Уведіть назву курсу</label>
-                          </div>
-                          <div class="form-floating mb-3">
-                           <textarea class="form-control h-100" id="floatingTextArea" placeholder="Уведіть опис курсу"></textarea>
-                           <label for="floatingTextArea">Уведіть опис курсу</label>
-                          </div>
-                          <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">Додати</button>
 
-                        </form>
-                    </div>
+                    {% block course_form_content %}
+                    <form method="post">
+                      {% csrf_token %}
+                      <div class="form-floating mb-3">
+                        {{ course_form.name}}
+                        <label for="{{ course_form.name.id }}">Уведіть назву</label>
+                      </div>
+                      <div class="form-floating mb-3">
+                        {{ course_form.description }}
+                        <label for="{{ course_form.description.id }}">Уведіть опис</label>
+                      </div>
+                      <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">Додати</button>
+                    </form>
+                    {% endblock %}
+
+                </div>
             </div>
         </div>
     </div>
 
     <div class="container my-4">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-
-
-            <div class="col">
-                <div class="card shadow-sm course">
-
-                    <div class="head p-3 bg-danger">
-                        <h1 class="head-text">
-                            Алгоритми та склданість
-                        </h1>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">
-                        ad-in to additional content.
-                        This content is a little bit longer ad-in to additional content.
-                        This content is a little bit longers content is a little bit longer longers
-                        </p>
-
-
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="justify-content-start">
-                                <button type="button" class="btn btn-sm btn-primary rounded-pill card-btn">
-                                    Редагувати курс
-                                </button>
-                            </div>
-                            <div class="mx-2"></div>
-                            <div class="justify-content-end ml-auto">
-                                <button type="button" class="btn btn-sm btn-danger rounded-pill card-btn">
-                                    Видалити курс
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                </div>
-            </div>
-
+                {% show_all_courses_teacher username %}
         </div>
-
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
