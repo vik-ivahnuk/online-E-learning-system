@@ -30,9 +30,14 @@
                 </div>
                 <div class="mx-2"></div>
                 <div class="justify-content-end ml-auto">
-                    <button type="button" class="btn btn-sm btn-danger rounded-pill card-btn">
-                        Покинути курс
-                    </button>
+                    {% block delete_course_content %}
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" value="{{ c.code }}" name="delete_course" class="btn btn-sm btn-danger rounded-pill card-btn">
+                            Покинути курс
+                        </button>
+                    </form>
+                    {% endblock %}
                 </div>
 
                 {% else %}

@@ -1,0 +1,22 @@
+@import url('root.css');
+
+.box-info {
+    background: linear-gradient(to bottom right, #8e2de2, #4a00e0);
+    border-radius: 1.5rem;
+}
+
+.box-info-2 {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 1.5rem;
+}
+
+.box-info-inner {
+    background: linear-gradient(to bottom, #FF69B4, #9b2bae);
+    border-radius: 1.2rem;
+    color: white;
+}
+
+header {
+    background-color: var(--main-color);
+    font-size: 1.3rem;
+}

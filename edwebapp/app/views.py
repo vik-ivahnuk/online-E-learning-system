@@ -9,6 +9,7 @@ def index(request):
     logout(request)
 
     if request.method == 'POST':
+        print(request)
         if 'sign-up' in request.POST:
             signupform = SignUpForm(request.POST)
             signinform = SignInForm()
@@ -57,36 +58,48 @@ def get_home(request):
     }
 
     if request.method == 'POST':
-        add_course_form = AddCourseForm(request.POST)
-        if add_course_form.is_valid():
-            code = add_course_form.cleaned_data.get('code')
-            try:
-                course = Course.objects.get(code=code)
-            except Course.DoesNotExist:
-                course = None
-            if course is None:
-                print("Такого немає")
-                context = {
-                    'username': request.user.username,
-                    'name': request.user.first_name + ' ' + request.user.last_name,
-                    'add_course_form': AddCourseForm()
-                }
-            elif Student.objects.filter(user=request.user, course=course).exists():
-                print("Уже є")
-                context = {
-                    'username': request.user.username,
-                    'name': request.user.first_name + ' ' + request.user.last_name,
-                    'add_course_form': AddCourseForm()
-                }
-            else:
-                student = Student()
-                student.user = request.user
-                student.course = course
-                student.save()
+        if 'add_course' in request.POST:
+            add_course_form = AddCourseForm(request.POST)
+            if add_course_form.is_valid():
+                code = add_course_form.cleaned_data.get('code')
+                try:
+                    course = Course.objects.get(code=code)
+                except Course.DoesNotExist:
+                    course = None
+                if course is None:
+                    print("Такого немає")
+                    context = {
+                        'username': request.user.username,
+                        'name': request.user.first_name + ' ' + request.user.last_name,
+                        'add_course_form': AddCourseForm()
+                    }
+                elif Student.objects.filter(user=request.user, course=course, status='active').exists():
+                    print("Уже є")
+                    context = {
+                        'username': request.user.username,
+                        'name': request.user.first_name + ' ' + request.user.last_name,
+                        'add_course_form': AddCourseForm()
+                    }
+                try:
+                    student = Student.objects.get(user=request.user, course=course, status='not_active')
+                    student.status = 'active'
+                    student.save()
+                except Student.DoesNotExist:
+                    student = Student()
+                    student.user = request.user
+                    student.course = course
+                    student.save()
+        elif 'delete_course' in request.POST:
+            code = request.POST.get('delete_course')
+            course = Course.objects.get(code=code)
+            student = Student.objects.get(user=request.user, course=course)
+            student.status = 'not_active'
+            student.save()
 
     return render(request, 'app/home.html', context)
 
 
+##### TODO
 def get_course(request):
     context = {
         'username': request.user.username,

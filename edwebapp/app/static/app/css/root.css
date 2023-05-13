@@ -18,8 +18,12 @@
     --regular-font-size: 0.95rem;
     --small-font-size: 0.8rem;
 
+    --gray-gradient: radial-gradient(circle at 18.7% 37.8%, rgb(250, 250, 250) 0%, rgb(225, 234, 238) 90%);
 
+}
 
+.hidden-element{
+    display: none;
 }
 
 @media screen and (min-width: 850px) {
@@ -27,10 +31,8 @@
         --normal-font-size: 1rem;
         --small-font-size: 0.875rem;
     }
-
-.hidden-element{
-    display: none;
 }
+
 
 .logo-img {
 width: 65px;

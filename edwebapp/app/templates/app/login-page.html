@@ -4,47 +4,35 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Welcome</title>
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
-        />
-            <link rel="stylesheet" href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css">
-        <link
-            rel="stylesheet"
-            href="https://unpkg.com/swiper/swiper-bundle.min.css"
-        />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"/>
+        <link rel="stylesheet" href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css">
+        <link  rel="stylesheet"  href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
 
         {% load static %}
-
-        <link rel="stylesheet" href="{% static 'app/css/login-page.css' %}">
-        <link rel="stylesheet" href="{% static 'app/css/login-form.css' %}">
+        <link rel="stylesheet" href="{% static 'app/css/log-form.css' %}">
+        <link rel="stylesheet" href="{% static 'app/css/g-page.css' %}">
         <link rel="icon" href="{% static 'app/img/logo_main.png'  %}">
     </head>
     <body>
 
-        <header id="header">
-            <nav>
-                <div class="container">
+        <header class="p-3 mb-3">
+            <div class="container">
+                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
 
-                    <div class="logo">
-                        <img src="{% static 'app/img/logo.png' %}" alt="Logo" />
-                    </div>
+                <div class="d-flex align-items-center mb-2 mb-lg-0">
+                    <img src="{% static 'app/img/logo.png' %}" alt="Logo" style="max-width: 65px; height: auto;">
+                </div>
 
-                    <div class="links">
-                        <ul>
-                            <li> <a class="nav_link" href="#">Home</a></li>
-                            <li> <a class="nav_link" href="#">About-us</a></li>
-                            <li> <a class="nav_link" href="#">GitHub</a></li>
-                            <li> <button class="log-reg-btn">Login</button></li>
-                        </ul>
-                    </div>
+                <div class="nav col-12 col-lg-auto me-lg-auto mb-2"></div>
 
-                    <div class="dropdown-menu">
-                        <div class="bar"></div>
-                    </div>
+                <button id="log-reg" type="button" class="btn btn-outline-light" style="font-size: 1.3rem;">Увійти</button>
 
                 </div>
-            </nav>
+            </div>
         </header>
 
         <div class="{% if mode == 0 %}overlay hidden-element{% else %}overlay{% endif %}">
@@ -138,30 +126,48 @@
         </div>
 
 
-        <div class="header-content">
-            <div class="container grid-2">
-                <div class="column-1" >
-                    <a class="btn" href="#" >Get Started</a>
-                </div>
 
-                <div class="column-2">
-                    <div class="container_inner">
-                        <div class="box">
-                            <h2>Teacher</h2>
-                            <p>Створюйте свої курси та запрошуйте до них своїх учнів. Сворюйте завдання для тестів за допомогою інструментів цієї платформи.</p>
+
+        <div class="container py-4">
+            <div class="row">
+                <div class="col-md-4 my-3">
+                    <div class="h-100 p-5 text-bg-dark box-info-2">
+
+                        <div class="col-lg-12">
+                            <p>
+                                Це онлайн платформа для дистанційної освіти. Щоб почати роботу вам потрібно авторизуватися або сворити новий обліковий запис.
+                            </p>
                         </div>
-                        <div class="box">
-                            <h2>Student</h2>
-                            <p>Text </p>
+                        <div class="text-center">
+                            <button id="get_started" class="btn btn-outline btn-primary rounded-pill" href="#" >Почати роботу</button>
                         </div>
+
+                    </div>
+
+                    </div>
+                    <div class="col-md-8 my-3">
+
+                        <div class="p-5 text-bg-dark box-info">
+                            <div class="container p-5 box-info-inner my-3">
+                                <h2>Студент</h2>
+                                <p>
+                                    Приєднуйтесь до курсів своїх викладчів та проходтьте їхні завдання
+                                </p>
+                            </div>
+                            <div class="container p-5 box-info-inner my-3">
+                                <h2>Вчитель</h2>
+                                <p>
+                                  Сворюйте свої курси та запрошуйте до них своїх учнів. Сворюйте завдання для тестів за допомогою інструментів цієї платформи
+                                </p>
+                            </div>
                     </div>
                 </div>
-
             </div>
         </div>
 
-        <script src="{% static 'app/js/login-page.js' %}"></script>
-        <script src="{% static 'app/js/login-form.js' %}"></script>
+        <script src="{% static 'app/js/log-reg-page.js' %}"></script>
+        <script src="{% static 'app/js/log-form.js' %}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 

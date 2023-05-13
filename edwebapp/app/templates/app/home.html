@@ -44,7 +44,7 @@
                         <form class="d-flex" method="post">
                             {% csrf_token %}
                             {{ add_course_form.code}}
-                            <button class="btn btn-outline-secondary" type="submit">
+                            <button class="btn btn-outline-secondary" name="add_course" type="submit">
                                 <i class="bi bi-person-plus-fill"></i>
                             </button>
                         </form>
