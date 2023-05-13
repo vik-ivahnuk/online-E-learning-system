@@ -39,15 +39,18 @@
                         </button>
                     </h1>
 
+                    {% block add_course_form_content %}
                     <div id="form-add" class="col-md-12 collapse">
-                        <form class="d-flex">
-                            <input class="form-control me-2" type="search" placeholder="Уведіть код курсу">
+                        <form class="d-flex" method="post">
+                            {% csrf_token %}
+                            {{ add_course_form.code}}
                             <button class="btn btn-outline-secondary" type="submit">
                                 <i class="bi bi-person-plus-fill"></i>
                             </button>
                         </form>
                         <span class="text-body-emphasis">Код курсу ви можете отримати у свого вчителя:</span>
                     </div>
+                    {% endblock %}
             </div>
         </div>
     </div>
@@ -55,41 +58,7 @@
     <div class="container my-4">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
-            <div class="col">
-                <div class="card shadow-sm course">
-
-                    <div class="head p-3">
-                        <h1 class="head-text">
-                            Алгоритми та склданість
-                        </h1>
-                        <i class="bi bi-person-circle head-icon"></i>
-                        <h2 class="head-text">
-                            Win S
-                        </h2>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">
-                            Text Text Text Text Text Text Text Text Text Text Text Text
-                        </p>
-
-
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="justify-content-start">
-                                <button type="button" class="btn btn-sm btn-primary rounded-pill card-btn">
-                                    Переглянути <i class="bi bi-arrow-right"></i>
-                                </button>
-                            </div>
-                            <div class="mx-2"></div>
-                            <div class="justify-content-end ml-auto">
-                                <button type="button" class="btn btn-sm btn-danger rounded-pill card-btn">
-                                    Покинути курс
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                </div>
-            </div>
+            {% show_all_courses_student username %}
 
         </div>
 

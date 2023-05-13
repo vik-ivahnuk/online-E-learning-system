@@ -91,6 +91,7 @@ class Course(models.Model):
 
 class Student(models.Model):
     joined_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=30, default='active')
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='students')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='students')
 

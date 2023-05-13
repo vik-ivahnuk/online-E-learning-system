@@ -6,13 +6,37 @@
             <h1 class="head-text">
                 {{c.name}}
             </h1>
+            {% if is_student %}
+                <i class="bi bi-person-circle head-icon"></i>
+                <h2 class="head-text">
+                    {{c.user.first_name}} {{c.user.last_name}}
+                </h2>
+            {% endif %}
         </div>
         <div class="card-body">
             <p class="card-text">
                 {{c.description}}
             </p>
 
+
             <div class="d-flex justify-content-between align-items-center">
+
+                {% if is_student  %}
+
+                <div class="justify-content-start">
+                    <button type="button" class="btn btn-sm btn-primary rounded-pill card-btn">
+                        Переглянути <i class="bi bi-arrow-right"></i>
+                    </button>
+                </div>
+                <div class="mx-2"></div>
+                <div class="justify-content-end ml-auto">
+                    <button type="button" class="btn btn-sm btn-danger rounded-pill card-btn">
+                        Покинути курс
+                    </button>
+                </div>
+
+                {% else %}
+
                 <div class="justify-content-start">
                     <a href="{% url 'course_editor' c.code %}" class="btn btn-sm btn-primary rounded-pill card-btn">
                         Редагувати курс
@@ -24,7 +48,13 @@
                         Видалити курс
                     </button>
                 </div>
+
+
+
+                {% endif %}
+
             </div>
+
         </div>
         <br>
     </div>

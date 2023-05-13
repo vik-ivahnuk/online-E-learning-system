@@ -4,11 +4,24 @@ from app.models import *
 register = template.Library()
 
 
-@register.inclusion_tag('app/teacher_courses.html')
+@register.inclusion_tag('app/courses.html')
 def show_all_courses_teacher(username):
     user = User.objects.get(username=username)
-    courses = Course.objects.filter(user=user)
-    return {'courses': courses}
+    courses = Course.objects.filter(user=user).order_by('-created_at')
+    return {
+        'courses': courses,
+        'is_student': False
+    }
+
+
+@register.inclusion_tag('app/courses.html')
+def show_all_courses_student(username):
+    user = User.objects.get(username=username)
+    courses = Course.objects.filter(students__user=user).order_by('-students__joined_at')
+    return {
+        'courses': courses,
+        'is_student': True
+    }
 
 
 @register.inclusion_tag('app/header_authorized.html')

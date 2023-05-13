@@ -12,7 +12,7 @@ admin.site.register(Course, CourseAdmin)
 
 
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ('joined_at', 'course', 'user')
+    list_display = ('joined_at', 'status', 'course', 'user')
 
 
 admin.site.register(Student, StudentAdmin)

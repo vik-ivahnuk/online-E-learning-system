@@ -147,3 +147,17 @@ class TestForm(Form):
         if not name:
             raise ValidationError("Поле 'назва' не може бути порожнім.")
         return cleaned_data
+
+
+class AddCourseForm(Form):
+    code = CharField(label='Код курсу', max_length=8, widget=TextInput(attrs={
+        'class': 'form-control me-2',
+        'placeholder': 'Уведіть код курсу'
+    }))
+
+    def clean(self):
+        cleaned_data = super().clean()
+        code = cleaned_data.get("code")
+        if not code:
+            raise ValidationError("Поле 'код курсу' не може бути порожнім.")
+        return cleaned_data

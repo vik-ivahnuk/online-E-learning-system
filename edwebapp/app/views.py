@@ -50,11 +50,40 @@ def index(request):
 
 @login_required(login_url='/')
 def get_home(request):
-    # print(request.user.courses.all())
     context = {
         'username': request.user.username,
-        'name': request.user.first_name + ' ' + request.user.last_name
+        'name': request.user.first_name + ' ' + request.user.last_name,
+        'add_course_form': AddCourseForm()
     }
+
+    if request.method == 'POST':
+        add_course_form = AddCourseForm(request.POST)
+        if add_course_form.is_valid():
+            code = add_course_form.cleaned_data.get('code')
+            try:
+                course = Course.objects.get(code=code)
+            except Course.DoesNotExist:
+                course = None
+            if course is None:
+                print("Такого немає")
+                context = {
+                    'username': request.user.username,
+                    'name': request.user.first_name + ' ' + request.user.last_name,
+                    'add_course_form': AddCourseForm()
+                }
+            elif Student.objects.filter(user=request.user, course=course).exists():
+                print("Уже є")
+                context = {
+                    'username': request.user.username,
+                    'name': request.user.first_name + ' ' + request.user.last_name,
+                    'add_course_form': AddCourseForm()
+                }
+            else:
+                student = Student()
+                student.user = request.user
+                student.course = course
+                student.save()
+
     return render(request, 'app/home.html', context)
 
 
@@ -77,7 +106,6 @@ def get_home_teacher(request):
             course.description = course_form.cleaned_data.get('description')
             course.user = request.user
             course.save()
-            print('successfully')
 
     context = {
         'course_form': CourseForm(),
