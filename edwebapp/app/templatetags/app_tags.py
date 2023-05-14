@@ -34,9 +34,10 @@ def show_header(username, name, is_home=False):
 
 
 @register.inclusion_tag('app/test-block.html')
-def show_tests(course):
+def show_tests(course, is_teacher=True):
     tests = course.testmodel_set.all()
     return {
         'tests': tests,
+        'is_teacher': is_teacher
     }
 

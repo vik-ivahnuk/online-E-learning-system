@@ -11,7 +11,7 @@
         {% if is_home %}
             <a href="#" class="nav-link px-2 text-secondary">Home</a>
         {% else %}
-            <a href="#" class="nav-link px-2 link-light">Home</a>
+            <a href="{% url 'home' %}" class="nav-link px-2 link-light">Home</a>
         {% endif %}
         <a href="#" class="nav-link px-2 link-light">Logout</a>
 

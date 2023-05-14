@@ -24,9 +24,9 @@
                 {% if is_student  %}
 
                 <div class="justify-content-start">
-                    <button type="button" class="btn btn-sm btn-primary rounded-pill card-btn">
+                    <a href="{% url 'course' c.code %}" type="button" class="btn btn-sm btn-primary rounded-pill card-btn">
                         Переглянути <i class="bi bi-arrow-right"></i>
-                    </button>
+                    </a>
                 </div>
                 <div class="mx-2"></div>
                 <div class="justify-content-end ml-auto">
@@ -53,8 +53,6 @@
                         Видалити курс
                     </button>
                 </div>
-
-
 
                 {% endif %}
 

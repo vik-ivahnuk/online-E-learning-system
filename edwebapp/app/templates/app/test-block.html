@@ -10,10 +10,17 @@
                 <div class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto">
                     термін здачі:
                 </div>
+                {% if is_teacher %}
                 <div class="text-end">
                     <a href="{% url 'test_editor' t.code %}" type="button" class="btn btn-outline btn-primary my-3">Редагувати</a>
                     <button type="button" class="btn btn-outline btn-danger my-3">Видалити</button>
                 </div>
+                {% else %}
+                <div class="text-end">
+                    <a  type="button" class="btn btn-outline btn-primary my-3">Відкрити</a>
+<!--                    href="{% url 'test_editor' t.code %}"-->
+                </div>
+                {% endif %}
               </div>
         </div>
     </div>

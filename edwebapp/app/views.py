@@ -99,17 +99,23 @@ def get_home(request):
     return render(request, 'app/home.html', context)
 
 
-##### TODO
-def get_course(request):
+def get_course(request, code):
+    course = get_object_or_404(Course, code=code)
     context = {
         'username': request.user.username,
         'name': request.user.first_name + ' ' + request.user.last_name,
+        'course': course,
         'test_form': TestForm()
     }
     return render(request, 'app/course.html', context)
 
 
-@login_required(login_url='home')
+##### TODO
+def get_test(request):
+    context = {}
+    return render(request, 'app/test-student.html', context)
+
+
 def get_home_teacher(request):
     if request.method == 'POST':
         course_form = CourseForm(request.POST)
@@ -148,7 +154,7 @@ def get_course_editor(request, code):
             test.course = course
             test.save()
 
-    return render(request, 'app/course.html', context)
+    return render(request, 'app/course_editor.html', context)
 
 
 def get_test_editor(request, code):
