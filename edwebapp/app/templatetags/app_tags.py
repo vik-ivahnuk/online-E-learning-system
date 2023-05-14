@@ -31,3 +31,12 @@ def show_header(username, name, is_home=False):
         'name': name,
         'is_home': is_home
     }
+
+
+@register.inclusion_tag('app/test-block.html')
+def show_tests(course):
+    tests = course.testmodel_set.all()
+    return {
+        'tests': tests,
+    }
+

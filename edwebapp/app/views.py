@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -129,8 +129,31 @@ def get_home_teacher(request):
 
 
 def get_course_editor(request, code):
-    course = Course.objects.get(code=code)
+    course = get_object_or_404(Course, code=code)
+    if not course.user.username == request.user.username:
+        return redirect('app')
+
     context = {
-        'course': course
+        'username': request.user.username,
+        'name': request.user.first_name + ' ' + request.user.last_name,
+        'course': course,
+        'test_form': TestForm()
     }
+    if request.method == 'POST':
+        test_form = TestForm(request.POST)
+        if test_form.is_valid():
+            name = test_form.cleaned_data.get('name')
+            test = TestModel()
+            test.name = name
+            test.course = course
+            test.save()
+
     return render(request, 'app/course.html', context)
+
+
+def get_test_editor(request, code):
+    test = get_object_or_404(TestModel, code=code)
+    context = {
+        'test': test
+    }
+    return render(request, 'app/test_editor.html', context)

@@ -1,4 +1,6 @@
 import string
+
+from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.db import models
@@ -64,12 +66,11 @@ class User(AbstractBaseUser):
         return True
 
 
-
 def generate_code():
     allowed_chars = string.digits + string.ascii_lowercase
-    code = ''.join(secrets.choice(allowed_chars) for i in range(8))
+    code = ''.join(secrets.choice(allowed_chars) for _ in range(8))
     while Course.objects.filter(code=code).exists():
-        code = secrets.token_hex(4)
+        code = ''.join(secrets.choice(allowed_chars) for _ in range(8))
     return code
 
 
@@ -88,6 +89,9 @@ class Course(models.Model):
             self.created_at = timezone.now()
         super().save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse('course_editor', kwargs={'code': self.code})
+
 
 class Student(models.Model):
     joined_at = models.DateTimeField(auto_now_add=True)
@@ -102,3 +106,22 @@ class Student(models.Model):
         if not self.pk:
             self.joined_at = timezone.now()
         super().save(*args, **kwargs)
+
+
+def generate_code2():
+    allowed_chars = string.digits + string.ascii_lowercase
+    code = ''.join(secrets.choice(allowed_chars) for _ in range(16))
+    while TestModel.objects.filter(code=code).exists():
+        code = ''.join(secrets.choice(allowed_chars) for _ in range(16))
+    return code
+
+
+class TestModel(models.Model):
+    code = models.CharField(max_length=16, unique=True, default=generate_code2)
+    name = models.CharField(max_length=255)
+    deadline = models.DateTimeField(null=True, blank=True)
+    is_published = models.BooleanField(default=False)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+
+    def get_absolute_url(self):
+        return reverse('test_editor', kwargs={'code': self.code})

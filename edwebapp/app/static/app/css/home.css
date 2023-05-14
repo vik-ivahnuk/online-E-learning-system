@@ -76,7 +76,12 @@ header {
 }
 
 
-.task {
-    background: var(--main-color);
+.test {
+    background: white;
     border-radius: 0.9rem;
+}
+
+.test-block {
+    background: var(--main-color);
+    border-radius: 1.5rem
 }

@@ -1,0 +1,21 @@
+
+<div class="p-3 test-block">
+    {% for t in tests %}
+    <div class="container my-3">
+        <div class="p-4 test">
+            <div class="d-flex flex-wrap align-items-center justify-content-center">
+                <div class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto">
+                    {{t.name}}
+                </div>
+                <div class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto">
+                    термін здачі:
+                </div>
+                <div class="text-end">
+                    <a href="{% url 'test_editor' t.code %}" type="button" class="btn btn-outline btn-primary my-3">Редагувати</a>
+                    <button type="button" class="btn btn-outline btn-danger my-3">Видалити</button>
+                </div>
+              </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
