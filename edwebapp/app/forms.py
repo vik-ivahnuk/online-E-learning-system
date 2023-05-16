@@ -1,4 +1,4 @@
-from django.forms import ModelForm, Form, TextInput, EmailInput, PasswordInput, CharField
+from django.forms import *
 from .models import User
 from django.core.exceptions import ValidationError
 
@@ -164,7 +164,7 @@ class AddCourseForm(Form):
 
 
 class Test(Form):
-    name = CharField(label='Назва тесту', max_length=8, widget=TextInput(attrs={
+    name = CharField(label='Назва тесту', max_length=255, widget=TextInput(attrs={
         'class': 'form-control me-2',
         'placeholder': 'Уведіть назву тесту'
     }))
@@ -175,3 +175,37 @@ class Test(Form):
         if not name:
             raise ValidationError("Поле 'код тесту' не може бути порожнім.")
         return cleaned_data
+
+
+class AnswerForm(Form):
+    answer_text = CharField(max_length=255, required=True, widget=Textarea(
+        attrs={
+            'class': 'form-control',
+            'placeholder': 'Введіть варіант відповіді',
+            'rows': 1
+        })
+    )
+    is_correct = BooleanField(required=False)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        answer_text = cleaned_data.get("answer_text")
+        if not answer_text:
+            raise ValidationError("Варіант відповіді не може бути порожнім.")
+        return cleaned_data
+
+
+AnswerFormSet = formset_factory(AnswerForm, extra=1)
+
+
+class QuestionForm(Form):
+    question_text = CharField(max_length=255,
+                              required=True,
+                              widget=Textarea(
+                                  attrs={
+                                      'class': 'form-control',
+                                      'placeholder': 'Уведіть питання',
+                                      'rows': 1
+                                     })
+                              )
+    answers = AnswerFormSet(prefix='answer')

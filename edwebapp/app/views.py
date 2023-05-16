@@ -3,6 +3,7 @@ from .forms import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import *
+import re
 
 
 def index(request):
@@ -159,7 +160,45 @@ def get_course_editor(request, code):
 
 def get_test_editor(request, code):
     test = get_object_or_404(TestModel, code=code)
+    if request.method == 'POST':
+        form = QuestionForm(request.POST)
+        AnswerFormSet2 = formset_factory(AnswerForm)
+        answer_prefix = 'answer'
+        answer_formset_data = {k: v for k, v in request.POST.items() if
+                               answer_prefix in k}
+        num = sum(key.count('answer_text') for key in answer_formset_data.keys())
+        answer_formset_data["answer-TOTAL_FORMS"] = f"{num}"
+        cur = 0
+        formset = {}
+        for key, v in answer_formset_data.items():
+            if 'answer-' in key and '-answer_text' in key:
+                num = int(key.split('-')[1])
+                if num - cur > 1:
+                    num = cur + 1
+                cur = num
+                k = 'answer-' + str(num) + '-answer_text'
+                formset[k] = v
+            elif 'answer-' in key and '-is_correct' in key:
+                num = int(key.split('-')[1])
+                if num > cur:
+                    k = 'answer-' + str(cur) + '-is_correct'
+                    formset[k] = v
+                else:
+                    formset[key] = v
+            else:
+                formset[key] = v
+
+        answers = AnswerFormSet2(formset, prefix=answer_prefix)
+        if form.is_valid() and answers.is_valid():
+            question_text = form.cleaned_data['question_text']
+            for answer_form in answers:
+                if answer_form.is_valid():
+                    answer_text = answer_form.cleaned_data.get('answer_text')
+                    is_correct = answer_form.cleaned_data.get('is_correct')
+                    print(answer_text, ' ----------------- ', is_correct)
+    form = QuestionForm()
     context = {
-        'test': test
+        'test': test,
+        'form': form,
     }
-    return render(request, 'app/test_editor.html', context)
+    return render(request, 'app/test-editor.html', context)
