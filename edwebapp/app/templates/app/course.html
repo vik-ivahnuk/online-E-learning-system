@@ -16,51 +16,6 @@
 
     {% show_header username name %}
 
-    <div class="container my-4">
-        <div class="p-3 mode">
-            <div class="row">
-                    <h2 class="text-center text-body-emphasis title-copy">
-                        Скопіюйте код курсу та поділіться ним зі своїми учнями аби вони могли приєднатися
-                    </h2>
-
-                    <div class="col-md-4 mx-auto d-flex">
-                        <input id="idCourse" class="form-control me-2" readonly value="{{course.code}}">
-                        <button class="btn btn-outline-secondary" onclick="copy()" type="submit">
-                            <ion-icon name="copy-outline"></ion-icon>
-                        </button>
-                    </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container my-4">
-        <div class="p-3 mode">
-            <div class="row">
-                <h1 class="text-center text-body-emphasis">
-                    Створити тест
-                    <button id="show-form" class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#form-add" aria-expanded="false" aria-controls="form-add">
-                        <i id="plus" class="bi bi-plus-lg"></i>
-                        <i id="c-up" class="bi bi-chevron-up hidden-element"></i>
-                    </button>
-                </h1>
-
-                <div id="form-add" class="col-md-6 mx-auto collapse">
-
-                    {% block test_form_content %}
-                    <form class="d-flex" method="post">
-                        {% csrf_token %}
-                        {{ test_form.name}}
-                        <button class="btn btn-outline-secondary" type="submit">
-                            <i class="bi bi-plus-lg"></i>
-                        </button>
-                    </form>
-                    {% endblock %}
-
-                </div>
-            </div>
-        </div>
-    </div>
-
 
     <div class="container my-4">
         {% show_tests course False %}

@@ -100,6 +100,7 @@ def get_home(request):
     return render(request, 'app/home.html', context)
 
 
+@login_required(login_url='/')
 def get_course(request, code):
     course = get_object_or_404(Course, code=code)
     context = {
@@ -111,12 +112,50 @@ def get_course(request, code):
     return render(request, 'app/course.html', context)
 
 
-##### TODO
-def get_test(request):
-    context = {}
+@login_required(login_url='/')
+def get_test(request, code):
+    test = TestModel.objects.get(code=code)
+    tasks = Task.objects.filter(test=test)
+    if request.method == 'POST':
+        student_test_set = request.POST.copy()
+        test_student = TestStudent()
+        test_student.test = test
+        test_student.student = request.user
+        num = 0
+        total = 0
+        for t in tasks:
+            answers = Answer.objects.filter(task=t, is_correct=True)
+            is_correct = True
+            if len(answers) != len(student_test_set.getlist(f'{t.id}')):
+                is_correct = False
+            else:
+                for answer in answers:
+                    print(student_test_set.getlist(f'{t.id}'))
+                    if (not str(answer.id) in student_test_set.getlist(f'{t.id}')) and answer.is_correct:
+                        is_correct = False
+                        break
+            if is_correct:
+                num += 1
+            total += 1
+            ans = AnswerStudent()
+            ans.task = t
+            ans.student = request.user
+            ans.is_correct = is_correct
+            ans.save()
+        test_student.total_score = total
+        test_student.scores = num
+        test_student.save()
+    form = TestStudentForm(questions=tasks)
+
+    context = {
+        'test': test,
+        'form': form,
+    }
+
     return render(request, 'app/test-student.html', context)
 
 
+@login_required(login_url='/')
 def get_home_teacher(request):
     if request.method == 'POST':
         course_form = CourseForm(request.POST)
@@ -135,6 +174,7 @@ def get_home_teacher(request):
     return render(request, 'app/home-teacher.html', context)
 
 
+@login_required(login_url='/')
 def get_course_editor(request, code):
     course = get_object_or_404(Course, code=code)
     if not course.user.username == request.user.username:
@@ -158,6 +198,7 @@ def get_course_editor(request, code):
     return render(request, 'app/course_editor.html', context)
 
 
+@login_required(login_url='/')
 def get_test_editor(request, code):
     test = get_object_or_404(TestModel, code=code)
     if request.method == 'POST':
@@ -191,11 +232,20 @@ def get_test_editor(request, code):
         answers = AnswerFormSet2(formset, prefix=answer_prefix)
         if form.is_valid() and answers.is_valid():
             question_text = form.cleaned_data['question_text']
+            task = Task()
+            task.test = test
+            task.question = question_text
+            task.save()
             for answer_form in answers:
                 if answer_form.is_valid():
                     answer_text = answer_form.cleaned_data.get('answer_text')
                     is_correct = answer_form.cleaned_data.get('is_correct')
-                    print(answer_text, ' ----------------- ', is_correct)
+                    answer = Answer()
+                    answer.text = answer_text
+                    answer.is_correct = is_correct
+                    answer.task = task
+                    answer.save()
+
     form = QuestionForm()
     context = {
         'test': test,

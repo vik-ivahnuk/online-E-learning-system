@@ -18,3 +18,11 @@ class StudentAdmin(admin.ModelAdmin):
 admin.site.register(Student, StudentAdmin)
 
 admin.site.register(TestModel)
+
+admin.site.register(Task)
+
+admin.site.register(Answer)
+
+admin.site.register(TestStudent)
+
+admin.site.register(AnswerStudent)

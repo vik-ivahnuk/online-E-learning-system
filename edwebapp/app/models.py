@@ -125,3 +125,28 @@ class TestModel(models.Model):
 
     def get_absolute_url(self):
         return reverse('test_editor', kwargs={'code': self.code})
+
+
+class Task(models.Model):
+    question = models.CharField(max_length=255)
+    points = models.FloatField(default=1)
+    test = models.ForeignKey(TestModel, on_delete=models.CASCADE)
+
+
+class Answer(models.Model):
+    text = models.CharField(max_length=255)
+    is_correct = models.BooleanField(default=False)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+
+
+class TestStudent(models.Model):
+    scores = models.IntegerField()
+    total_score = models.IntegerField(default=0)
+    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    test = models.ForeignKey(TestModel, on_delete=models.CASCADE)
+
+
+class AnswerStudent(models.Model):
+    is_correct = models.BooleanField(default=False)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    student = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -107,10 +107,10 @@
                     '<a class="w-100 btn btn-danger btn-md btn-block delete-answer">Видалити</a>' +
                 '</div>' +
             '</div>');
-            console.log(answerForm);
             var newDeleteButton = newAnswerDiv.querySelector(".delete-answer");
             newDeleteButton.addEventListener("click", deleteAnswerForm);
             answerForms.appendChild(newAnswerDiv);
+            autosize(document.querySelectorAll('textarea.form-control'));
         }
 
         addButton.addEventListener("click", addAnswerForm);

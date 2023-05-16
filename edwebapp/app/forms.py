@@ -1,5 +1,5 @@
 from django.forms import *
-from .models import User
+from .models import *
 from django.core.exceptions import ValidationError
 
 
@@ -184,7 +184,7 @@ class AnswerForm(Form):
             'placeholder': 'Введіть варіант відповіді',
             'rows': 1
         })
-    )
+                            )
     is_correct = BooleanField(required=False)
 
     def clean(self):
@@ -206,6 +206,20 @@ class QuestionForm(Form):
                                       'class': 'form-control',
                                       'placeholder': 'Уведіть питання',
                                       'rows': 1
-                                     })
+                                  })
                               )
     answers = AnswerFormSet(prefix='answer')
+
+
+class TestStudentForm(forms.Form):
+    def __init__(self, questions, *args, **kwargs):
+        super(TestStudentForm, self).__init__(*args, **kwargs)
+        for question in questions:
+
+            choices = [(option.id, option.text) for option in question.answer_set.all()]
+            self.fields[str(question.id)] = MultipleChoiceField(
+                label=question.question,
+                widget=CheckboxSelectMultiple,
+                choices=choices,
+                required=False
+            )
