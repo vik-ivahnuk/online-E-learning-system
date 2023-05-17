@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import *
 import re
+from . import utils
 
 
 def index(request):
@@ -116,6 +117,9 @@ def get_course(request, code):
 def get_test(request, code):
     test = TestModel.objects.get(code=code)
     tasks = Task.objects.filter(test=test)
+    if TestStudent.objects.filter(test=test, student=request.user).exists():
+        return redirect('test_result', code=code)
+
     if request.method == 'POST':
         student_test_set = request.POST.copy()
         test_student = TestStudent()
@@ -147,6 +151,7 @@ def get_test(request, code):
         test_student.total_score = total
         test_student.scores = num
         test_student.save()
+        return redirect('test_result', code=code)
     form = TestStudentForm(questions=tasks)
 
     context = {
@@ -155,6 +160,20 @@ def get_test(request, code):
     }
 
     return render(request, 'app/test-student.html', context)
+
+
+def get_test_result(request, code):
+    test = TestModel.objects.get(code=code)
+    test_student = TestStudent.objects.get(test=test, student=request.user)
+
+    context = {
+        'username': request.user.username,
+        'name': request.user.first_name + ' ' + request.user.last_name,
+        'score': test_student.scores,
+        'total_score': test_student.total_score,
+        'test': test
+    }
+    return render(request, 'app/test-result.html', context)
 
 
 @login_required(login_url='/')
@@ -281,9 +300,26 @@ def get_test_publish(request, code):
 
 @login_required(login_url='/')
 def get_test_statistic(request, code):
+
+    test = TestModel.objects.get(code=code)
+    course = test.course
+    students = course.students.all()
+    students_statistic = []
+    for student in students:
+        full_name = student.user.last_name + ' ' + student.user.first_name
+        try:
+            test_student = TestStudent.objects.get(student=student.user, test=test)
+            status = 'Здано вчасно' if test_student.submitted_on_time else 'Здано не вчасно'
+            score = str(test_student.scores) + ' / ' + str(test_student.total_score)
+        except TestStudent.DoesNotExist:
+            status = 'Не здано'
+            score = ''
+        students_statistic.append(utils.StudentStatistic(full_name, status, score))
+
     context = {
         'username': request.user.username,
-        'name': request.user.first_name + ' ' + request.user.last_name
+        'name': request.user.first_name + ' ' + request.user.last_name,
+        'testname': test.name,
+        'students_statistic': students_statistic
     }
-
     return render(request, 'app/test-statistic.html', context)

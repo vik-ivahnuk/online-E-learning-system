@@ -142,7 +142,7 @@ class Answer(models.Model):
 class TestStudent(models.Model):
     scores = models.IntegerField()
     total_score = models.IntegerField(default=0)
-    # submitted_on_time = models.BooleanField()
+    submitted_on_time = models.BooleanField(default=True)
     student = models.ForeignKey(User, on_delete=models.CASCADE)
     test = models.ForeignKey(TestModel, on_delete=models.CASCADE)
 

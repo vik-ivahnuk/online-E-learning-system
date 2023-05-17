@@ -14,7 +14,7 @@ AUTHENTICATION_BACKENDS = [
     'app.backends.UserBackend',
 ]
 
-# AUTH_USER_MODEL = 'app.User'
+AUTH_USER_MODEL = 'app.User'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
