@@ -147,9 +147,14 @@ def get_test(request, code):
             ans.is_correct = is_correct
             ans.save()
         current_datetime = timezone.now()
-        # current_datetime < test.deadline
+        if current_datetime > test.deadline:
+            test_student.submitted_on_time = False
+            test_student.scores = 0
+        else:
+            test_student.submitted_on_time = True
+            test_student.scores = num
+
         test_student.total_score = total
-        test_student.scores = num
         test_student.save()
         return redirect('test_result', code=code)
     form = TestStudentForm(questions=tasks)
@@ -222,6 +227,7 @@ def get_course_editor(request, code):
 @login_required(login_url='/')
 def get_test_editor(request, code):
     test = get_object_or_404(TestModel, code=code)
+
     if request.method == 'POST':
         form = QuestionForm(request.POST)
         AnswerFormSet2 = formset_factory(AnswerForm)
@@ -273,6 +279,7 @@ def get_test_editor(request, code):
         'name': request.user.first_name + ' ' + request.user.last_name,
         'test': test,
         'form': form,
+        'is_published': test.is_published
     }
     return render(request, 'app/test-editor.html', context)
 
@@ -300,7 +307,6 @@ def get_test_publish(request, code):
 
 @login_required(login_url='/')
 def get_test_statistic(request, code):
-
     test = TestModel.objects.get(code=code)
     course = test.course
     students = course.students.all()
@@ -319,7 +325,7 @@ def get_test_statistic(request, code):
     context = {
         'username': request.user.username,
         'name': request.user.first_name + ' ' + request.user.last_name,
-        'testname': test.name,
+        'test': test,
         'students_statistic': students_statistic
     }
     return render(request, 'app/test-statistic.html', context)

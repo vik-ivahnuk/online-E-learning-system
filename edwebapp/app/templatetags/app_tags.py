@@ -34,10 +34,25 @@ def show_header(username, name, is_home=False):
 
 
 @register.inclusion_tag('app/test-block.html')
-def show_tests(course, is_teacher=True):
+def show_tests(course):
     tests = course.testmodel_set.order_by('-id')
     return {
         'tests': tests,
-        'is_teacher': is_teacher
+        'is_teacher': True
     }
+
+
+@register.inclusion_tag('app/test-block.html')
+def show_tests_student(course, username):
+    tests = course.testmodel_set.order_by('-id')
+    return {
+        'tests': tests,
+        'is_teacher': False,
+        'username': username
+    }
+
+
+
+
+
 

@@ -116,6 +116,9 @@ def generate_code2():
     return code
 
 
+
+
+
 class TestModel(models.Model):
     code = models.CharField(max_length=16, unique=True, default=generate_code2)
     name = models.CharField(max_length=255)
@@ -125,6 +128,7 @@ class TestModel(models.Model):
 
     def get_absolute_url(self):
         return reverse('test_editor', kwargs={'code': self.code})
+
 
 
 class Task(models.Model):

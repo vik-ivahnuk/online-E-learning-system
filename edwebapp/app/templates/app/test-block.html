@@ -15,10 +15,14 @@
                     {% endif %}
                 </div>
                 <div class="text-end">
-                    <a href="{% url 'test_editor' t.code %}" type="button" class="btn btn-outline btn-primary my-3">Редагувати</a>
+                    <a href="{% url 'test_editor' t.code %}" type="button" class="btn btn-outline btn-primary my-3">Відкрити</a>
                     <button type="button" class="btn btn-outline btn-danger my-3">Видалити</button>
                 </div>
                 {% else %}
+                {% load student_tags %}
+                <div class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto">
+                    <h5>{% get_score t username%}</h5>   {% get_status t username%}
+                </div>
                 <div class="text-end">
                     <a  href="{% url 'test' t.code %}" type="button" class="btn btn-outline btn-primary my-3">Відкрити</a>
                 </div>

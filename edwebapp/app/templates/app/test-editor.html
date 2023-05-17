@@ -18,13 +18,18 @@
 
 
     <div class="d-flex justify-content-center p-2">
-      <ul class="nav nav-pills">
-        <li class="nav-item"><a href="{% url 'test_publish' test.code %}" class="w-100 btn btn-success btn-md btn-block">Опублікувати</a></li>
-        <li class="nav-item"><a href="{% url 'test_statistic' test.code %}" class="nav-link text-dark">Переглянути статистику</a></li>
-      </ul>
+        <ul class="nav nav-pills">
+            {% if is_published %}
+            <li class="nav-item"><a href="{% url 'test_publish' test.code %}" class="w-100 btn btn-secondary btn-md btn-block">Зупинти публікування</a></li>
+            {% else %}
+            <li class="nav-item"><a href="{% url 'test_publish' test.code %}" class="w-100 btn btn-success btn-md btn-block">Опублікувати</a></li>
+            {% endif %}
+            <li class="nav-item"><a href="{% url 'test_statistic' test.code %}" class="nav-link text-dark">Переглянути статистику</a></li>
+        </ul>
     </div>
     <hr class="my-1">
 
+    {% if not is_published %}
     <div class="container my-4">
         <div class="p-3 mode">
             <div class="row">
@@ -76,6 +81,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
     <div class="container my-4"></div>
 

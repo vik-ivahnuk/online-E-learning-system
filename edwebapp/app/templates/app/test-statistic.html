@@ -18,7 +18,7 @@
     <div class="d-flex p-2">
         <div class="container">
             <ul class="nav nav-pills">
-                <li class="nav-item"><a href="{% url 'course' test.course.code %}" class="nav-link text-dark" style="font-size: 1.5rem;">
+                <li class="nav-item"><a href="{% url 'test_editor' test.code %}" class="nav-link text-dark" style="font-size: 1.5rem;">
                     <i class="bi bi-arrow-left-short"></i>повернутися назад
                 </a>
             </ul>
@@ -28,7 +28,7 @@
 
     <div class="container my-4">
         <div class="p-3 mode">
-            <h1 class="text-center">{{ testname }}</h1><br><hr class="my-5">
+            <h1 class="text-center">{{ test.name }}</h1><br>
             <div class="row text-center">
                 <div class="col-md-4"><h5>Призвіще та імя</h5></div>
                 <div class="col-md-4"><h5>Тест</h5></div>
