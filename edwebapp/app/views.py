@@ -142,6 +142,8 @@ def get_test(request, code):
             ans.student = request.user
             ans.is_correct = is_correct
             ans.save()
+        current_datetime = timezone.now()
+        # current_datetime < test.deadline
         test_student.total_score = total
         test_student.scores = num
         test_student.save()
@@ -180,12 +182,6 @@ def get_course_editor(request, code):
     if not course.user.username == request.user.username:
         return redirect('app')
 
-    context = {
-        'username': request.user.username,
-        'name': request.user.first_name + ' ' + request.user.last_name,
-        'course': course,
-        'test_form': TestForm()
-    }
     if request.method == 'POST':
         test_form = TestForm(request.POST)
         if test_form.is_valid():
@@ -194,7 +190,13 @@ def get_course_editor(request, code):
             test.name = name
             test.course = course
             test.save()
-
+            return redirect('course_editor', code=code)
+    context = {
+        'username': request.user.username,
+        'name': request.user.first_name + ' ' + request.user.last_name,
+        'course': course,
+        'test_form': TestForm()
+    }
     return render(request, 'app/course_editor.html', context)
 
 
@@ -248,7 +250,40 @@ def get_test_editor(request, code):
 
     form = QuestionForm()
     context = {
+        'username': request.user.username,
+        'name': request.user.first_name + ' ' + request.user.last_name,
         'test': test,
         'form': form,
     }
     return render(request, 'app/test-editor.html', context)
+
+
+@login_required(login_url='/')
+def get_test_publish(request, code):
+    test = TestModel.objects.get(code=code)
+    if request.method == 'POST':
+        form = DateTimeForm(request.POST)
+        if form.is_valid():
+            test.deadline = form.cleaned_data['deadline']
+            test.is_published = True
+            test.save()
+            return redirect('test_editor', code=code)
+
+    form = DateTimeForm()
+    context = {
+        'username': request.user.username,
+        'name': request.user.first_name + ' ' + request.user.last_name,
+        'form': form,
+        'testname': test.name
+    }
+    return render(request, 'app/test-publish.html', context)
+
+
+@login_required(login_url='/')
+def get_test_statistic(request, code):
+    context = {
+        'username': request.user.username,
+        'name': request.user.first_name + ' ' + request.user.last_name
+    }
+
+    return render(request, 'app/test-statistic.html', context)

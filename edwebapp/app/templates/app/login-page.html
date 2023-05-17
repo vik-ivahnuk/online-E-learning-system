@@ -47,24 +47,17 @@
                         <div class="close-button">
                             <ion-icon name="close-outline"></ion-icon>
                         </div>
-
                         <h1 class="form-title">Login</h1>
-
                         <div class="input-box">
                             <i class='bx bx-user input-icon'></i>
                             {{ signinform.username }}
                         </div>
-
                         <div class="input-box">
                             <i class='bx bx-lock input-icon'></i>
                             {{ signinform.password }}
                         </div>
-
-                        <span class="err">{{ signinform.non_field_errors }}</span>
-
-
-                        <button href="#" name="sign-in" class="login-btn">Sign In</button>
-
+                        <span class="err nav nav-pills">{{ signinform.non_field_errors }}</span>
+                        <button name="sign-in" class="login-btn w-100 btn btn-success btn-md btn-block">Sign In</button>
                         <div>
                             <span class="label-link-signinup">Don't have an Account?</span>
                             <span class="link-signin" id="sign-up">Sign Up Now</span>
@@ -111,7 +104,7 @@
                             {{ signupform.password }}
                         </div>
 
-                        <button type="submit" name="sign-up" class="login-btn">Sign Up</button>
+                        <button type="submit" name="sign-up" class="login-btn w-100 btn btn-success btn-md btn-block">Sign Up</button>
 
                         <div>
                             <span class="label-link-signinup">Already have an Account?</span>
@@ -124,9 +117,6 @@
                 </div>
             </div>
         </div>
-
-
-
 
         <div class="container py-4">
             <div class="row">
@@ -143,23 +133,22 @@
                         </div>
 
                     </div>
+                </div>
+                <div class="col-md-8 my-3">
 
-                    </div>
-                    <div class="col-md-8 my-3">
-
-                        <div class="p-5 text-bg-dark box-info">
-                            <div class="container p-5 box-info-inner my-3">
-                                <h2>Студент</h2>
-                                <p>
-                                    Приєднуйтесь до курсів своїх викладчів та проходтьте їхні завдання
-                                </p>
-                            </div>
-                            <div class="container p-5 box-info-inner my-3">
-                                <h2>Вчитель</h2>
-                                <p>
-                                  Сворюйте свої курси та запрошуйте до них своїх учнів. Сворюйте завдання для тестів за допомогою інструментів цієї платформи
-                                </p>
-                            </div>
+                    <div class="p-5 text-bg-dark box-info">
+                        <div class="container p-5 box-info-inner my-3">
+                            <h2>Студент</h2>
+                            <p>
+                                Приєднуйтесь до курсів своїх викладчів та проходтьте їхні завдання
+                            </p>
+                        </div>
+                        <div class="container p-5 box-info-inner my-3">
+                            <h2>Вчитель</h2>
+                            <p>
+                              Сворюйте свої курси та запрошуйте до них своїх учнів. Сворюйте завдання для тестів за допомогою інструментів цієї платформи
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>

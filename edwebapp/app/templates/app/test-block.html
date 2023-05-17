@@ -5,12 +5,15 @@
         <div class="p-4 test">
             <div class="d-flex flex-wrap align-items-center justify-content-center">
                 <div class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto">
-                    {{t.name}}
+                    <strong>{{ t.name }}</strong>
                 </div>
-                <div class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto">
-                    термін здачі:
-                </div>
+
                 {% if is_teacher %}
+                <div class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto">
+                    {% if t.is_published %}
+                        опубліковано, термін здачі: {{t.deadline|date:"d E Y, H:i" }}
+                    {% endif %}
+                </div>
                 <div class="text-end">
                     <a href="{% url 'test_editor' t.code %}" type="button" class="btn btn-outline btn-primary my-3">Редагувати</a>
                     <button type="button" class="btn btn-outline btn-danger my-3">Видалити</button>

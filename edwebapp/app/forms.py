@@ -223,3 +223,15 @@ class TestStudentForm(forms.Form):
                 choices=choices,
                 required=False
             )
+
+
+class DateTimeForm(forms.Form):
+    deadline = DateTimeField(
+        widget=TextInput(
+            attrs={
+                'class': 'form-control',
+                'id': 'datetimepicker',
+                'placeholder': 'Select Date and Time'
+            }
+        )
+    )
