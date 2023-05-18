@@ -1,5 +1,5 @@
 from pathlib import Path
-
+import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-(^xk*m)%=)0&q@@lm*v@o@ku1yp33oq8)ru^5!xbuqvxuy7v3='
@@ -24,8 +24,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app'
-
 ]
+
+MEDIA_ROOT = (
+    BASE_DIR
+)
+
+MEDIA_URL = '/photos/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

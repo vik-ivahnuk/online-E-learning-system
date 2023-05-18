@@ -14,7 +14,7 @@ def get_status(test, username):
         else:
             return 'здано з запізненням'
     except TestStudent.DoesNotExist:
-        return 'термін здачі:' + str(test.deadline)
+        return 'термін здачі: ' + test.deadline.strftime('%Y-%m-%d %H:%M')
 
 
 

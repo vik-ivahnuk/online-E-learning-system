@@ -214,9 +214,18 @@ class QuestionForm(Form):
 class TestStudentForm(forms.Form):
     def __init__(self, questions, *args, **kwargs):
         super(TestStudentForm, self).__init__(*args, **kwargs)
-        for question in questions:
 
+        for question in questions:
             choices = [(option.id, option.text) for option in question.answer_set.all()]
+
+            if question.photo:
+                self.fields[str(question.id) + '-photo'] = CharField(
+                    widget=HiddenInput(attrs={'value': question.photo.url}),
+                    initial=question.photo.url,
+                    required=False
+                )
+                print(question.photo.url)
+
             self.fields[str(question.id)] = MultipleChoiceField(
                 label=question.question,
                 widget=CheckboxSelectMultiple,

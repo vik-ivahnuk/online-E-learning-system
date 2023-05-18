@@ -158,7 +158,6 @@ def get_test(request, code):
         test_student.save()
         return redirect('test_result', code=code)
     form = TestStudentForm(questions=tasks)
-
     context = {
         'test': test,
         'form': form,
@@ -329,3 +328,10 @@ def get_test_statistic(request, code):
         'students_statistic': students_statistic
     }
     return render(request, 'app/test-statistic.html', context)
+
+
+def get_exp(request):
+    if request.method == 'POST':
+        svg_code = request.POST.get('svgData')
+        print(svg_code)
+    return render(request, 'app/exp.html')

@@ -134,6 +134,7 @@ class TestModel(models.Model):
 class Task(models.Model):
     question = models.CharField(max_length=255)
     points = models.FloatField(default=1)
+    photo = models.ImageField(upload_to='photos/', null=True, blank=True)
     test = models.ForeignKey(TestModel, on_delete=models.CASCADE)
 
 

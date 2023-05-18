@@ -20,18 +20,24 @@
     <div class="container my-4">
         <div class="p-3 mode">
 
-            <form method="post">
-              {% csrf_token %}
-              {% for field in form %}
-                <h3>{{ field.label }}</h3>
-                {% for choice in field %}
-                  <label>{{ choice.tag }} {{ choice.choice_label }}</label>
-                {% endfor %}
-                <hr class="my-3">
-              {% endfor %}
-              <button type="submit">Submit</button>
-            </form>
+        <form method="post">
+            {% csrf_token %}
 
+
+
+
+        {% for field in form %}
+            {% if 'photo' in field.html_name %}
+                <img src="{{ field.value }}" alt="Photo">
+            {% else %}
+                {{ field.label_tag }}
+                {{ field }}
+            {% endif %}
+            <br>
+        {% endfor %}
+          <button type="submit">Submit</button>
+
+        </form>
         </div>
     </div>
 

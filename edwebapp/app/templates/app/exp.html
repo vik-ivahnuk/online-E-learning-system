@@ -4,6 +4,12 @@
     <circle cx="50%" cy="50%" r="30" fill="white" />
     <text x="50%" y="50%" fill="#000" font-size="20" text-anchor="middle" dy=".3em">1</text>
 </svg>
+<br>
+<form id="uploadForm" method="post">
+  {% csrf_token %}
+  <input type="hidden" name="svgData" id="svgData">
+  <button type="submit">Завантажити</button>
+</form>
 
 <script>
     var svg = document.getElementById("my-svg");
@@ -14,5 +20,13 @@
         circle.setAttribute("r", 30);
         circle.setAttribute("fill", "white");
         svg.appendChild(circle);
+        var svgElement = document.getElementById("my-svg");
+        var svgCode = svgElement.outerHTML;
+        document.getElementById("svgData").value = svgCode;
     });
+</script>
+<script>
+    var svgElement = document.getElementById("my-svg");
+    var svgCode = svgElement.outerHTML;
+    document.getElementById("svgData").value = svgCode;
 </script>
