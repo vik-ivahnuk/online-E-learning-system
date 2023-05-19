@@ -44,12 +44,17 @@ def show_tests(course):
 
 @register.inclusion_tag('app/test-block.html')
 def show_tests_student(course, username):
-    tests = course.testmodel_set.order_by('-id')
+    tests = course.testmodel_set.filter(is_published=True).order_by('-id')
     return {
         'tests': tests,
         'is_teacher': False,
         'username': username
     }
+
+
+@register.filter
+def enumerate(sequence, start=1):
+    return [(index + start, item) for index, item in enumerate(sequence)]
 
 
 

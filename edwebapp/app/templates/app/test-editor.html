@@ -41,12 +41,28 @@
                     </button>
                 </h1>
 
-                <div id="form-add" class="col-md-6 mx-auto collapse">
+                <div id="form-add" class="col-md-8 mx-auto collapse my-3">
                     {% block task_form_content %}
                     <form method="POST">
                         {% csrf_token %}
-                        {{ form.question_text }}
+                        <div class="my-3">
+                            <svg id="my-svg" class="bd-placeholder-img card-img-top" width="600" height="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false" overflow="auto" style="box-shadow: 0px 4px 10px -2px rgba(0, 0, 0, 0.5);">
+                                <title>Placeholder</title>
+                                <rect width="100%" height="100%" fill="white"></rect>
+                            </svg>
+                        </div>
+                        <div class="row gy-3 my-3">
+                            <div class="col-md-9">
+                                <input id="input-edge-bst" type="text" class="form-control" placeholder="Ведіть значення вузла дерева">
+                            </div>
+                            <div class="col-md-3">
+                                <a id="add-edge" class="w-100 btn btn-primary">add</a>
+                            </div>
 
+                        </div>
+
+                        {{ form.question_text }}
+                        <input type="hidden" id="hidden-input" name="hidden_input">
                         <hr class="my-3">
                         {{ form.answers.management_form }}
                         <div id="answer-forms">
@@ -132,6 +148,138 @@
             button.addEventListener("click", deleteAnswerForm);
         });
 
+    </script>
+    <script>
+
+        class TreeNode {
+            constructor(value, height) {
+                this.value = value;
+                this.height = height;
+                this.left = null;
+                this.right = null;
+            }
+        }
+
+        class BinarySearchTree {
+            constructor() {
+                this.root = null;
+                this.height = 0;
+            }
+
+        insert(value) {
+            if (!this.root) {
+                this.root = new TreeNode(value, 0);
+                this.height = 0;
+                return;
+            }
+
+            let currentNode = this.root;
+            let parentNode = null;
+            let height = 0;
+
+            while (currentNode) {
+                parentNode = currentNode;
+
+                if (parseFloat(value) < parseFloat(currentNode.value)) {
+                    currentNode = currentNode.left;
+                } else {
+                    currentNode = currentNode.right;
+                }
+                height++;
+
+            }
+            if (height > 3) {
+                    alert("дерево надто високе, та не вміщається");
+                    return;
+            }
+
+            if (parseFloat(value) < parseFloat(parentNode.value)) {
+                console.log(value, parentNode.value);
+                parentNode.left = new TreeNode(value, height);
+            } else {
+                parentNode.right = new TreeNode(value, height);
+            }
+
+            this.height = Math.max(this.height, height - 1);
+        }
+
+        preOrderTraversal(node, elementSvg, pos_x, pos_y, prev_x, prev_y) {
+                if (node === null) return;
+
+                var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                circle.setAttribute("cx", pos_x + "%");
+                circle.setAttribute("cy", pos_y + "%");
+                circle.setAttribute("r", "3%");
+                circle.setAttribute("fill", "blue");
+
+                var text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                text.setAttribute("x", pos_x + "%");
+                text.setAttribute("y", pos_y + "%");
+                text.setAttribute("text-anchor", "middle");
+                text.setAttribute("alignment-baseline", "central");
+                text.setAttribute("fill", "white");
+                text.textContent = node.value;
+
+                var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                if (prev_x > 0) {
+
+                    var distance = Math.sqrt((pos_x - prev_x) ** 2 + (pos_y - prev_y) ** 2);
+                    var ratio = 4 / distance;
+                    var new_x = prev_x + (pos_x - prev_x) * ratio;
+                    var new_y = prev_y + (pos_y - prev_y) * ratio;
+
+                    line.setAttribute("x1", new_x + "%");
+                    line.setAttribute("y1", new_y + "%");
+                    line.setAttribute("x2", pos_x + "%");
+                    line.setAttribute("y2", pos_y + "%");
+                    line.setAttribute("stroke", "black");
+                    line.setAttribute("stroke-width", "2");
+                    elementSvg.appendChild(line);
+                }
+
+                prev_x = pos_x;
+                prev_y = pos_y;
+
+                elementSvg.appendChild(circle);
+                elementSvg.appendChild(text);
+                var pos_x_left = pos_x - (this.height - node.height + 1) / (node.height / 2 + 1) * 5
+                var pos_x_right = pos_x + (this.height - node.height + 1)/ (node.height / 2 + 1) * 5
+                var pos_y_new = pos_y + 23
+
+                this.preOrderTraversal(node.left, elementSvg, pos_x_left, pos_y_new, prev_x, prev_y);
+                this.preOrderTraversal(node.right, elementSvg, pos_x_right, pos_y_new, prev_x, prev_y);
+            }
+        }
+
+
+        var addEdge = document.getElementById("add-edge");
+        const bst = new BinarySearchTree();
+        addEdge.addEventListener("click", function(event) {
+
+            var edge = document.getElementById("input-edge-bst").value;
+            bst.insert(edge)
+
+            var svgElement = document.getElementById("my-svg");
+            var circles = svgElement.getElementsByTagName("circle");
+            while (circles.length > 0) {
+              var circle = circles[0];
+              circle.parentNode.removeChild(circle);
+            }
+            var texts = svgElement.getElementsByTagName("text");
+            while (texts.length > 0) {
+              var text = texts[0];
+              text.parentNode.removeChild(text);
+            }
+            var lines = svgElement.getElementsByTagName("line");
+            while (lines.length > 0) {
+              var line = lines[0];
+              line.parentNode.removeChild(line);
+            }
+            bst.preOrderTraversal(bst.root, svgElement, 50, 15, -1, -1);
+
+            var svgCode = svgElement.outerHTML;
+            document.getElementById("hidden-input").value = svgCode;
+        });
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>

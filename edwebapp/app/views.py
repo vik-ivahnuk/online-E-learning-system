@@ -6,6 +6,12 @@ from .models import *
 import re
 from . import utils
 
+import io
+from svglib.svglib import svg2rlg
+from reportlab.graphics import renderPM
+from PIL import Image
+from django.core.files import File
+
 
 def index(request):
     logout(request)
@@ -258,10 +264,25 @@ def get_test_editor(request, code):
         answers = AnswerFormSet2(formset, prefix=answer_prefix)
         if form.is_valid() and answers.is_valid():
             question_text = form.cleaned_data['question_text']
+            img_svg = form.cleaned_data['hidden_input']
+
             task = Task()
             task.test = test
             task.question = question_text
+
             task.save()
+            if len(img_svg) > 0:
+                svg_data = img_svg.encode('utf-8')
+                drawing = svg2rlg(io.StringIO(svg_data.decode()))
+                png_data = renderPM.drawToString(drawing, fmt='PNG')
+
+                image = Image.open(io.BytesIO(png_data))
+                image_io = io.BytesIO()
+                image.save(image_io, format='PNG')
+                image_file = File(image_io)
+                task.photo.save('image' + str(task.id) + '.png', image_file)
+                task.save()
+
             for answer_form in answers:
                 if answer_form.is_valid():
                     answer_text = answer_form.cleaned_data.get('answer_text')
@@ -271,6 +292,7 @@ def get_test_editor(request, code):
                     answer.is_correct = is_correct
                     answer.task = task
                     answer.save()
+            return redirect('test_editor', code=code)
 
     form = QuestionForm()
     context = {

@@ -208,6 +208,7 @@ class QuestionForm(Form):
                                       'rows': 1
                                   })
                               )
+    hidden_input = CharField(widget=HiddenInput(), required=False)
     answers = AnswerFormSet(prefix='answer')
 
 
@@ -240,7 +241,7 @@ class DateTimeForm(forms.Form):
             attrs={
                 'class': 'form-control',
                 'id': 'datetimepicker',
-                'placeholder': 'Select Date and Time'
+                'placeholder': 'Виберіть дату та час'
             }
         )
     )
