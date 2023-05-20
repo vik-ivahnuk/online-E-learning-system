@@ -9,11 +9,11 @@
 
         <div class="nav col-12 col-lg-auto me-lg-auto mb-2"></div>
         {% if is_home %}
-            <a href="#" class="nav-link px-2 text-secondary">Home</a>
+            <a href="#" class="nav-link px-2 text-secondary">Головна</a>
         {% else %}
-            <a href="{% url 'home' %}" class="nav-link px-2 link-light">Home</a>
+            <a href="{% url 'home' %}" class="nav-link px-2 link-light">Головна</a>
         {% endif %}
-        <a href="{% url 'app' %}" class="nav-link px-2 link-light">Logout</a>
+        <a href="{% url 'app' %}" class="nav-link px-2 link-light">Вийти</a>
 
         <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-person-circle" style="font-size: 2rem;"></i>

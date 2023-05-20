@@ -13,8 +13,7 @@ urlpatterns = [
     path('home/teacher_mode/course_editor/<slug:code>/', views.get_course_editor, name='course_editor'),
     path('home/teacher_mode/course_editor/test/<slug:code>/', views.get_test_editor, name='test_editor'),
     path('home/teacher_mode/course_editor/test/publish/<slug:code>/', views.get_test_publish, name='test_publish'),
-    path('home/teacher_mode/course_editor/test/statistic/<slug:code>/', views.get_test_statistic, name='test_statistic'),
-    path('exp/', views.get_exp, name='exp'),
+    path('home/teacher_mode/course_editor/test/statistic/<slug:code>/', views.get_test_statistic, name='test_statistic')
 ]
 
 

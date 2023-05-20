@@ -17,7 +17,6 @@ def index(request):
     logout(request)
 
     if request.method == 'POST':
-        print(request)
         if 'sign-up' in request.POST:
             signupform = SignUpForm(request.POST)
             signinform = SignInForm()
@@ -27,7 +26,6 @@ def index(request):
                 username = signupform.cleaned_data.get('username')
                 raw_password = signupform.cleaned_data.get('password')
                 user = authenticate(username=username, password=raw_password, backend='app.backends.UserBackend')
-                print(user)
                 login(request, user)
                 if request.user.is_authenticated:
                     return redirect('home')
@@ -75,14 +73,12 @@ def get_home(request):
                 except Course.DoesNotExist:
                     course = None
                 if course is None:
-                    print("Такого немає")
                     context = {
                         'username': request.user.username,
                         'name': request.user.first_name + ' ' + request.user.last_name,
                         'add_course_form': AddCourseForm()
                     }
                 elif Student.objects.filter(user=request.user, course=course, status='active').exists():
-                    print("Уже є")
                     context = {
                         'username': request.user.username,
                         'name': request.user.first_name + ' ' + request.user.last_name,
@@ -140,7 +136,6 @@ def get_test(request, code):
                 is_correct = False
             else:
                 for answer in answers:
-                    print(student_test_set.getlist(f'{t.id}'))
                     if (not str(answer.id) in student_test_set.getlist(f'{t.id}')) and answer.is_correct:
                         is_correct = False
                         break
@@ -355,5 +350,4 @@ def get_test_statistic(request, code):
 def get_exp(request):
     if request.method == 'POST':
         svg_code = request.POST.get('svgData')
-        print(svg_code)
     return render(request, 'app/exp.html')
