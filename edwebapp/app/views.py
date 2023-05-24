@@ -225,6 +225,20 @@ def get_course_editor(request, code):
 
 
 @login_required(login_url='/')
+def get_student_list(request, code):
+    course = get_object_or_404(Course, code=code)
+    students = course.students.all()
+    context = {
+        'username': request.user.username,
+        'name': request.user.first_name + ' ' + request.user.last_name,
+        'students': students,
+        'course_name': course.name,
+        'is_empty': not students.exists()
+    }
+    return render(request, 'app/students_list.html', context)
+
+
+@login_required(login_url='/')
 def get_test_editor(request, code):
     test = get_object_or_404(TestModel, code=code)
 

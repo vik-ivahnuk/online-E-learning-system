@@ -22,15 +22,11 @@
         <header class="p-3 mb-3">
             <div class="container">
                 <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-
                 <div class="d-flex align-items-center mb-2 mb-lg-0">
                     <img src="{% static 'app/img/logo.png' %}" alt="Logo" style="max-width: 65px; height: auto;">
                 </div>
-
                 <div class="nav col-12 col-lg-auto me-lg-auto mb-2"></div>
-
                 <button id="log-reg" type="button" class="btn btn-outline-light" style="font-size: 1.3rem;">Увійти</button>
-
                 </div>
             </div>
         </header>
@@ -47,7 +43,7 @@
                         <div class="close-button">
                             <ion-icon name="close-outline"></ion-icon>
                         </div>
-                        <h1 class="form-title">Login</h1>
+                        <h1 class="form-title">Вхід</h1>
                         <div class="input-box">
                             <i class='bx bx-user input-icon'></i>
                             {{ signinform.username }}
@@ -57,67 +53,53 @@
                             {{ signinform.password }}
                         </div>
                         <span class="err nav nav-pills">{{ signinform.non_field_errors }}</span>
-                        <button name="sign-in" class="login-btn w-100 btn btn-success btn-md btn-block">Sign In</button>
+                        <button name="sign-in" class="login-btn w-100 btn btn-success btn-md btn-block">Увійти</button>
                         <div>
-                            <span class="label-link-signinup">Don't have an Account?</span>
-                            <span class="link-signin" id="sign-up">Sign Up Now</span>
+                            <span class="label-link-signinup">Не маєте свого облікового запису?</span>
+                            <span class="link-signin" id="sign-up">Зареєструватись</span>
                         </div>
                     </form>
                     {% endblock %}
-
                     {% block sign_up_content %}
                     <form action="" class="{% if mode < 2 %}sign-up hidden-element{% else %}sign-up{% endif %}" id="s-up" method="post">
-
                         {% csrf_token %}
-
                         <div class="close-button">
                             <ion-icon name="close-outline"></ion-icon>
                         </div>
-
-                        <h1 class="form-title">Login</h1>
-
-
+                        <h1 class="form-title">Реєстрація</h1>
                         <div class="input-box">
                             <i class='bx bx-user input-icon'></i>
                             {{ signupform.username }}
                         </div>
                         <span class="err">{{ signupform.username.errors }}</span>
-
                         <div class="input-box">
                             <i class='bx bx-at input-icon'></i>
                             {{ signupform.email }}
                         </div>
                         <span class="err">{{ signupform.email.errors }}</span>
-
                         <div class="input-box">
                             <i class='bx bx-user input-icon'></i>
                             {{ signupform.first_name }}
                         </div>
-
                         <div class="input-box">
                             <i class='bx bx-user input-icon'></i>
                             {{ signupform.last_name }}
                         </div>
-
                         <div class="input-box">
                             <i class='bx bx-lock input-icon'></i>
                             {{ signupform.password }}
                         </div>
-
-                        <button type="submit" name="sign-up" class="login-btn w-100 btn btn-success btn-md btn-block">Sign Up</button>
-
+                        <button type="submit" name="sign-up" class="login-btn w-100 btn btn-success btn-md btn-block">Зареєструватися</button>
                         <div>
-                            <span class="label-link-signinup">Already have an Account?</span>
-                            <span class="link-signup" id="sign-in">Sign In</span>
+                            <span class="label-link-signinup">Вже маєте обліковий запис?</span>
+                            <span class="link-signup" id="sign-in">Увійти</span>
                         </div>
-
                    </form>
                    {% endblock %}
                 </div>
                 </div>
             </div>
         </div>
-
         <div class="container py-4">
             <div class="row">
                 <div class="col-md-4 my-3">
@@ -153,12 +135,10 @@
                 </div>
             </div>
         </div>
-
         <script src="{% static 'app/js/log-reg-page.js' %}"></script>
         <script src="{% static 'app/js/log-form.js' %}"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-
     </body>
 </html>

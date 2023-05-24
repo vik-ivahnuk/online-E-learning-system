@@ -1,34 +1,39 @@
 
 <div class="p-3 test-block">
-    {% for t in tests %}
-    <div class="container my-3">
-        <div class="p-4 test">
-            <div class="d-flex flex-wrap align-items-center justify-content-center">
-                <div class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto">
-                    <strong>{{ t.name }}</strong>
-                </div>
-
-                {% if is_teacher %}
-                <div class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto">
-                    {% if t.is_published %}
-                        опубліковано, термін здачі: {{t.deadline|date:"d E Y, H:i" }}
-                    {% endif %}
-                </div>
-                <div class="text-end">
-                    <a href="{% url 'test_editor' t.code %}" type="button" class="btn btn-outline btn-primary my-3">Відкрити</a>
-                    <button type="button" class="btn btn-outline btn-danger my-3">Видалити</button>
-                </div>
-                {% else %}
-                {% load student_tags %}
-                <div class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto text-center">
-                    <h5>{% get_score t username%}</h5>   {% get_status t username%}
-                </div>
-                <div class="text-end">
-                    <a  href="{% url 'test' t.code %}" type="button" class="btn btn-outline btn-primary my-3">Відкрити</a>
-                </div>
-                {% endif %}
-              </div>
+    {% if is_empty %}
+        <div class="p-5 text-center text-light">
+            {{massage}}
         </div>
-    </div>
-    {% endfor %}
+    {% else %}
+        {% for t in tests %}
+        <div class="container my-3">
+            <div class="p-4 test">
+                <div class="d-flex flex-wrap align-items-center justify-content-center">
+                    <div class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto">
+                        <strong>{{ t.name }}</strong>
+                    </div>
+                    {% if is_teacher %}
+                    <div class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto">
+                        {% if t.is_published %}
+                            опубліковано, термін здачі: {{t.deadline|date:"d E Y, H:i" }}
+                        {% endif %}
+                    </div>
+                    <div class="text-end">
+                        <a href="{% url 'test_editor' t.code %}" type="button" class="btn btn-outline btn-primary my-3">Відкрити</a>
+                        <button type="button" class="btn btn-outline btn-danger my-3">Видалити</button>
+                    </div>
+                    {% else %}
+                    {% load student_tags %}
+                    <div class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto text-center">
+                        <h5>{% get_score t username%}</h5>   {% get_status t username%}
+                    </div>
+                    <div class="text-end">
+                        <a  href="{% url 'test' t.code %}" type="button" class="btn btn-outline btn-primary my-3">Відкрити</a>
+                    </div>
+                    {% endif %}
+                  </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
 </div>

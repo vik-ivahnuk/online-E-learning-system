@@ -29,3 +29,4 @@ def get_score(test, username):
             return str(test_student.scores) + ' / ' + str(test_student.total_score)
     except TestStudent.DoesNotExist:
         return ''
+
