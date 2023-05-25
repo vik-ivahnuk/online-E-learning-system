@@ -116,6 +116,11 @@ class BinarySearchTree {
         this.drawBST(node.left, elementSvg, pos_x_left, pos_y_new, prev_x, prev_y);
         this.drawBST(node.right, elementSvg, pos_x_right, pos_y_new, prev_x, prev_y);
     }
+
+    clearBST() {
+        this.root = null;
+        this.height = 0;
+    }
 }
 
 
@@ -223,6 +228,7 @@ var btnClear = document.getElementById('clear-img');
 
 btnClear.addEventListener("click", ()=> {
     clearSvg();
+    bst.clearBST();
 });
 
 taskTypeSelect.addEventListener('change', function() {
@@ -237,6 +243,7 @@ taskTypeSelect.addEventListener('change', function() {
             status = 0;
             clearSvg()
             graph.clearGraph()
+            bst.clearBST()
             break;
         case '2':
             svgBlock.classList.remove("hidden-element");
@@ -245,6 +252,7 @@ taskTypeSelect.addEventListener('change', function() {
             btnClear.classList.remove("hidden-element");
             status = 1;
             clearSvg()
+            bst.clearBST()
             break;
         case '3':
             svgBlock.classList.remove("hidden-element");

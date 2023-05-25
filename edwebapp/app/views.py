@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 import re
 from . import utils
+import pytz
 
 import io
 from svglib.svglib import svg2rlg
@@ -147,8 +148,12 @@ def get_test(request, code):
             ans.student = request.user
             ans.is_correct = is_correct
             ans.save()
-        current_datetime = timezone.now()
-        if current_datetime > test.deadline:
+        kiev_timezone = pytz.timezone('Europe/Kiev')
+        current_datetime = timezone.now().astimezone(kiev_timezone)
+        test_deadline = test.deadline
+        print(current_datetime.replace(tzinfo=None) , test.deadline.replace(tzinfo=None) )
+
+        if current_datetime.replace(tzinfo=None) > test_deadline.replace(tzinfo=None):
             test_student.submitted_on_time = False
             test_student.scores = 0
         else:
@@ -191,7 +196,7 @@ def get_home_teacher(request):
             course.description = course_form.cleaned_data.get('description')
             course.user = request.user
             course.save()
-
+            return redirect('teacher')
     context = {
         'course_form': CourseForm(),
         'username': request.user.username,
@@ -240,78 +245,81 @@ def get_student_list(request, code):
 
 @login_required(login_url='/')
 def get_test_editor(request, code):
-    test = get_object_or_404(TestModel, code=code)
-
-    if request.method == 'POST':
-        form = QuestionForm(request.POST)
-        AnswerFormSet2 = formset_factory(AnswerForm)
-        answer_prefix = 'answer'
-        answer_formset_data = {k: v for k, v in request.POST.items() if
-                               answer_prefix in k}
-        num = sum(key.count('answer_text') for key in answer_formset_data.keys())
-        answer_formset_data["answer-TOTAL_FORMS"] = f"{num}"
-        cur = 0
-        formset = {}
-        for key, v in answer_formset_data.items():
-            if 'answer-' in key and '-answer_text' in key:
-                num = int(key.split('-')[1])
-                if num - cur > 1:
-                    num = cur + 1
-                cur = num
-                k = 'answer-' + str(num) + '-answer_text'
-                formset[k] = v
-            elif 'answer-' in key and '-is_correct' in key:
-                num = int(key.split('-')[1])
-                if num > cur:
-                    k = 'answer-' + str(cur) + '-is_correct'
+        test = get_object_or_404(TestModel, code=code)
+        if request.method == 'POST':
+            form = QuestionForm(request.POST)
+            AnswerFormSet2 = formset_factory(AnswerForm)
+            answer_prefix = 'answer'
+            answer_formset_data = {k: v for k, v in request.POST.items() if
+                                   answer_prefix in k}
+            num = sum(key.count('answer_text') for key in answer_formset_data.keys())
+            answer_formset_data["answer-TOTAL_FORMS"] = f"{num}"
+            cur = 0
+            formset = {}
+            for key, v in answer_formset_data.items():
+                if 'answer-' in key and '-answer_text' in key:
+                    num = int(key.split('-')[1])
+                    if num - cur > 1:
+                        num = cur + 1
+                    cur = num
+                    k = 'answer-' + str(num) + '-answer_text'
                     formset[k] = v
+                elif 'answer-' in key and '-is_correct' in key:
+                    num = int(key.split('-')[1])
+                    if num > cur:
+                        k = 'answer-' + str(cur) + '-is_correct'
+                        formset[k] = v
+                    else:
+                        formset[key] = v
                 else:
                     formset[key] = v
-            else:
-                formset[key] = v
 
-        answers = AnswerFormSet2(formset, prefix=answer_prefix)
-        if form.is_valid() and answers.is_valid():
-            question_text = form.cleaned_data['question_text']
-            img_svg = form.cleaned_data['hidden_input']
+            answers = AnswerFormSet2(formset, prefix=answer_prefix)
+            if form.is_valid() and answers.is_valid():
+                question_text = form.cleaned_data['question_text']
+                img_svg = form.cleaned_data['hidden_input']
 
-            task = Task()
-            task.test = test
-            task.question = question_text
+                task = Task()
+                task.test = test
+                task.question = question_text
 
-            task.save()
-            if len(img_svg) > 0:
-                svg_data = img_svg.encode('utf-8')
-                drawing = svg2rlg(io.StringIO(svg_data.decode()))
-                png_data = renderPM.drawToString(drawing, fmt='PNG')
-
-                image = Image.open(io.BytesIO(png_data))
-                image_io = io.BytesIO()
-                image.save(image_io, format='PNG')
-                image_file = File(image_io)
-                task.photo.save('image' + str(task.id) + '.png', image_file)
                 task.save()
+                if len(img_svg) > 0:
+                    svg_data = img_svg.encode('utf-8')
+                    drawing = svg2rlg(io.StringIO(svg_data.decode()))
+                    png_data = renderPM.drawToString(drawing, fmt='PNG')
 
-            for answer_form in answers:
-                if answer_form.is_valid():
-                    answer_text = answer_form.cleaned_data.get('answer_text')
-                    is_correct = answer_form.cleaned_data.get('is_correct')
-                    answer = Answer()
-                    answer.text = answer_text
-                    answer.is_correct = is_correct
-                    answer.task = task
-                    answer.save()
-            return redirect('test_editor', code=code)
+                    image = Image.open(io.BytesIO(png_data))
+                    image_io = io.BytesIO()
+                    image.save(image_io, format='PNG')
+                    image_file = File(image_io)
+                    task.photo.save('image' + str(task.id) + '.png', image_file)
+                    task.save()
 
-    form = QuestionForm()
-    context = {
-        'username': request.user.username,
-        'name': request.user.first_name + ' ' + request.user.last_name,
-        'test': test,
-        'form': form,
-        'is_published': test.is_published
-    }
-    return render(request, 'app/test-editor.html', context)
+                for answer_form in answers:
+                    if answer_form.is_valid():
+                        answer_text = answer_form.cleaned_data.get('answer_text')
+                        is_correct = answer_form.cleaned_data.get('is_correct')
+                        answer = Answer()
+                        answer.text = answer_text
+                        answer.is_correct = is_correct
+                        answer.task = task
+                        answer.save()
+                return redirect('test_editor', code=code)
+
+        form = QuestionForm()
+        tasks = Task.objects.filter(test=test)
+        task_list = TestStudentForm(questions=tasks)
+        context = {
+            'username': request.user.username,
+            'name': request.user.first_name + ' ' + request.user.last_name,
+            'test': test,
+            'form': form,
+            'is_published': test.is_published,
+            'tasks': task_list,
+            'is_empty': not tasks.exists()
+        }
+        return render(request, 'app/test-editor.html', context)
 
 
 @login_required(login_url='/')

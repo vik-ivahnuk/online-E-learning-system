@@ -93,10 +93,10 @@
                                 <h5 class="text-center">Натисніть на місце куди ви хочете додати підпис</h5>
                                 <div class="row gy-3 my-3">
                                     <div class="col-md-6">
-                                        <input id="caption-text" type="text" class="form-control" placeholder="Ведіть значення вершини графа (необовязково)">
+                                        <input id="caption-text" type="text" class="form-control" placeholder="Ведіть значення">
                                     </div>
                                     <div class="col-md-6">
-                                        <label>колір вершини графа</label>
+                                        <label>колір напису</label>
                                         <input id="caption-color" type="color" class="form-control" value="#000">
                                     </div>
                                 </div>
@@ -131,7 +131,7 @@
                                 <input id="input-edge-bst" type="text" class="form-control" placeholder="Ведіть значення вузла дерева">
                             </div>
                             <div class="col-md-3">
-                                <a id="add-edge" class="w-100 btn btn-primary">add</a>
+                                <a id="add-edge" class="w-100 btn btn-primary">додати</a>
                             </div>
                         </div>
 
@@ -180,7 +180,33 @@
     </div>
     {% endif %}
 
-    <div class="container my-4"></div>
+    <div class="container my-4">
+        <div class="p-3 mode">
+            {% if is_empty %}
+                <div class="p-3 text-center">
+                    В цьому тесті ще немає завдань
+                </div>
+            {% endif %}
+            <div class="row">
+                <div class="col-md-8 mx-auto">
+                    {% for field in tasks %}
+                    <div class="p-3">
+                        {% if 'photo' in field.html_name %}
+                            <img src="{{ field.value }}" alt="Photo" style="width: 100%; height: auto; box-shadow: 0px 4px 10px -2px rgba(0, 0, 0, 0.5);">
+                        {% else %}
+                            {{ field.label_tag }}
+                            {{ field }}
+                            <br><div>
+                                <a class="btn btn-danger">видалити</a>
+                            </div>
+                            <hr>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                <div>
+            <div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
@@ -230,7 +256,7 @@
         });
 
     </script>
-    <script src="{% static 'app/js/graph-editor.js' %}"></script>
+    <script src="{% static 'app/js/graph_editor.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
     <script>
       autosize(document.querySelectorAll('textarea.form-control'));

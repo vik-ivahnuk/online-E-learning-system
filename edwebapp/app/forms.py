@@ -35,67 +35,149 @@ class SignInForm(Form):
         return cleaned_data
 
 
-class SignUpForm(ModelForm):
-    class Meta:
-        model = User
-        fields = [
-            'username',
-            'email',
-            'first_name',
-            'last_name',
-            'password'
-        ]
-        widgets = {
-            'username': TextInput(attrs={
-                'class': 'line-input',
-                'placeholder': 'Username'
-            }),
-            'email': EmailInput(attrs={
-                'class': 'line-input',
-                'placeholder': 'Email'
-            }),
-            'first_name': TextInput(attrs={
-                'class': 'line-input',
-                'placeholder': 'First name'
-            }),
-            'last_name': TextInput(attrs={
-                'class': 'line-input',
-                'placeholder': 'Last name'
-            }),
-            'password': PasswordInput(attrs={
-                'class': 'line-input',
-                'placeholder': 'Password'
-            })
-        }
+# class SignUpForm(ModelForm):
+#     class Meta:
+#         model = User
+#         fields = [
+#             'username',
+#             'email',
+#             'first_name',
+#             'last_name',
+#             'password'
+#         ]
+#         widgets = {
+#             'username': TextInput(attrs={
+#                 'class': 'line-input',
+#                 'placeholder': 'Username'
+#             }),
+#             'email': EmailInput(attrs={
+#                 'class': 'line-input',
+#                 'placeholder': 'Email'
+#             }),
+#             'first_name': TextInput(attrs={
+#                 'class': 'line-input',
+#                 'placeholder': 'First name'
+#             }),
+#             'last_name': TextInput(attrs={
+#                 'class': 'line-input',
+#                 'placeholder': 'Last name'
+#             }),
+#             'password': PasswordInput(attrs={
+#                 'class': 'line-input',
+#                 'placeholder': 'Password'
+#             })
+#         }
+#
+#         error_messages = {
+#             'username': {
+#                 'unique': "Цей username вже використовується"
+#             },
+#             'email': {
+#                 'unique': "Цей email вже використовується"
+#             }
+#         }
+#
+#     def clean_username(self):
+#         username = self.cleaned_data.get("username")
+#         users = User.objects.filter(username=username)
+#         if users.exists():
+#             raise ValidationError(self.fields['username'].error_messages['unique'], code='unique')
+#         return username
+#
+#     def clean_email(self):
+#         email = self.cleaned_data.get("email")
+#         users = User.objects.filter(email=email)
+#         if users.exists():
+#             raise ValidationError(self.fields['email'].error_messages['unique'], code='unique')
+#         return email
+#
+#     def save(self, commit=True):
+#         user = super().save(commit=False)
+#         user.set_password(self.cleaned_data['password'])
+#         if commit:
+#             user.save()
 
-        error_messages = {
-            'username': {
-                'unique': "Цей username вже використовується"
-            },
-            'email': {
-                'unique': "Цей email вже використовується"
-            }
-        }
+
+class SignUpForm(Form):
+    username = CharField(
+        max_length=30,
+        widget=TextInput(attrs={
+            'class': 'line-input',
+            'placeholder': 'Username'
+        })
+    )
+    email = EmailField(
+        max_length=60,
+        widget=EmailInput(attrs={
+            'class': 'line-input',
+            'placeholder': 'Email'
+        })
+    )
+    first_name = CharField(
+        max_length=30,
+        widget=TextInput(attrs={
+            'class': 'line-input',
+            'placeholder': 'First name'
+        })
+    )
+    last_name = CharField(
+        max_length=30,
+        widget=TextInput(attrs={
+            'class': 'line-input',
+            'placeholder': 'Last name'
+        })
+    )
+    password = CharField(
+        widget=PasswordInput(attrs={
+            'class': 'line-input',
+            'placeholder': 'Password'
+        })
+    )
+    password_confirmation = CharField(
+        label='Password Confirmation',
+        widget=PasswordInput(attrs={
+            'class': 'line-input',
+            'placeholder': 'Confirm Password'
+        })
+    )
 
     def clean_username(self):
         username = self.cleaned_data.get("username")
         users = User.objects.filter(username=username)
         if users.exists():
-            raise ValidationError(self.fields['username'].error_messages['unique'], code='unique')
+            raise ValidationError("Цей username вже використовується")
         return username
 
     def clean_email(self):
         email = self.cleaned_data.get("email")
         users = User.objects.filter(email=email)
         if users.exists():
-            raise ValidationError(self.fields['email'].error_messages['unique'], code='unique')
+            raise ValidationError("Цей email вже використовується")
         return email
 
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        user.set_password(self.cleaned_data['password'])
-        if commit:
-            user.save()
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get('password')
+        password_confirmation = cleaned_data.get('password_confirmation')
+
+        if password and password_confirmation and password != password_confirmation:
+            self.add_error('password_confirmation', "Паролі не співпадають")
+
+    def save(self):
+        username = self.cleaned_data['username']
+        email = self.cleaned_data['email']
+        first_name = self.cleaned_data['first_name']
+        last_name = self.cleaned_data['last_name']
+        password = self.cleaned_data['password']
+
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            first_name=first_name,
+            last_name=last_name,
+            password=password
+        )
+        user.save()
 
 
 class CourseForm(Form):
@@ -152,7 +234,8 @@ class TestForm(Form):
 class AddCourseForm(Form):
     code = CharField(label='Код курсу', max_length=8, widget=TextInput(attrs={
         'class': 'form-control me-2',
-        'placeholder': 'Уведіть код курсу'
+        'placeholder': 'Уведіть код курсу',
+        'rows': 2
     }))
 
     def clean(self):

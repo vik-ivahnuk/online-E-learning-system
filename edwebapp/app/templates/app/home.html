@@ -16,7 +16,7 @@
    {% show_header username name True %}
     <div class="container my-4">
         <div class="p-3 text-center mode">
-            <h1 class="text-body-emphasis">Вибраний режим роботи</h1>
+            <h1 class="text-body-emphasis">Режим роботи</h1>
             <div class="col-lg-6 mx-auto">
                 <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
                     <button type="button" class="btn align-items-center btn btn-primary btn-lg px-4 rounded-pill">Студент</button>
@@ -28,6 +28,7 @@
     <div class="container my-4">
         <div class="p-3 mode">
             <div class="row">
+
                     <h1 class="text-center text-body-emphasis">
                         Приєднатися до курсу
                         <button id="show-form" class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#form-add" aria-expanded="false" aria-controls="form-add">
@@ -37,7 +38,7 @@
                     </h1>
 
                     {% block add_course_form_content %}
-                    <div id="form-add" class="col-md-12 collapse">
+                    <div id="form-add" class="col-md-6 collapse mx-auto">
                         <form class="d-flex" method="post">
                             {% csrf_token %}
                             {{ add_course_form.code}}
