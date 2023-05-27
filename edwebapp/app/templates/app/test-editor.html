@@ -20,7 +20,7 @@
     <div class="d-flex justify-content-center p-2">
         <ul class="nav nav-pills">
             {% if is_published %}
-            <li class="nav-item"><a href="{% url 'test_publish' test.code %}" class="w-100 btn btn-secondary btn-md btn-block">Зупинти публікування</a></li>
+            <li class="nav-item"><a href="{% url 'stop_publish' test.code %}" class="w-100 btn btn-secondary btn-md btn-block">Зупинти публікування</a></li>
             {% else %}
             <li class="nav-item"><a href="{% url 'test_publish' test.code %}" class="w-100 btn btn-success btn-md btn-block">Опублікувати</a></li>
             {% endif %}
